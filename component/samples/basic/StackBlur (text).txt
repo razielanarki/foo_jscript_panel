@@ -1,0 +1,25 @@
+// ==PREPROCESSOR==
+// @name "StackBlur (text)"
+// @author "T.P Wang / marc2003"
+// @import "%fb2k_component_path%docs\Flags.txt"
+// @import "%fb2k_component_path%docs\Helpers.txt"
+// ==/PREPROCESSOR==
+
+var g_font = gdi.Font('Segoe UI', 32, FontStyle.Bold);
+var text_to_draw = '"Stack Blur" Sample';
+
+var img_to_blur = gdi.CreateImage(200, 200);
+var g = img_to_blur.GetGraphics();
+g.SetTextRenderingHint(TextRenderingHint.AntiAlias);
+g.DrawString(text_to_draw, g_font, RGB(0, 0, 255), 0, 0, 200, 200, StringFormat(StringAlignment.Center, StringAlignment.Center));
+img_to_blur.ReleaseGraphics(g);
+// Make Stack Blur, radius value can be between 2 and 254
+img_to_blur.StackBlur(30);
+
+function on_paint(gr) {
+	var x = (window.Width - 200) / 2;
+	var y = (window.Height - 200) / 2
+	gr.DrawImage(img_to_blur, x, y, 200, 200, 0, 0, 200, 200);
+	gr.SetTextRenderingHint(TextRenderingHint.ClearTypeGridFit);
+	gr.DrawString(text_to_draw, g_font, RGB(0, 0, 255), x, y, 200, 200, StringFormat(StringAlignment.Center, StringAlignment.Center));
+}

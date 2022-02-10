@@ -1,0 +1,391 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="FB2K">
+      <UniqueIdentifier>{2126478c-6361-4585-bfa9-f84bee78dee9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{d04eeaa5-1de1-4f91-81e4-8371e3bc8eb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Panel">
+      <UniqueIdentifier>{e722b6ce-919f-4b66-baf9-b6c64836bda9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptHost">
+      <UniqueIdentifier>{23ce7058-ac84-48d9-b4e7-2cf9aa97870b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptInterface">
+      <UniqueIdentifier>{ebff20e6-84a9-41a9-8507-e19d053296d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tasks">
+      <UniqueIdentifier>{ceda8675-18ee-464a-9948-a4aa43af46ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{cddfe437-10aa-4017-a1ca-50c923482b49}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resource\cfgBright.cfg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resource\cfgDark.cfg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resource\cfgRubyBlue.cfg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resource\foo_jscript_panel.api">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resource\foo_jscript_panel.js">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FB2K\ContextMenuCommand.h">
+      <Filter>FB2K</Filter>
+    </ClInclude>
+    <ClInclude Include="FB2K\Embed.h">
+      <Filter>FB2K</Filter>
+    </ClInclude>
+    <ClInclude Include="FB2K\EnumItemsCallback.h">
+      <Filter>FB2K</Filter>
+    </ClInclude>
+    <ClInclude Include="FB2K\FileInfoFilter.h">
+      <Filter>FB2K</Filter>
+    </ClInclude>
+    <ClInclude Include="FB2K\MainMenuCommand.h">
+      <Filter>FB2K</Filter>
+    </ClInclude>
+    <ClInclude Include="FB2K\OptimiseLayout.h">
+      <Filter>FB2K</Filter>
+    </ClInclude>
+    <ClInclude Include="FB2K\PlaylistLock.h">
+      <Filter>FB2K</Filter>
+    </ClInclude>
+    <ClInclude Include="FB2K\ProcessLocationsNotify.h">
+      <Filter>FB2K</Filter>
+    </ClInclude>
+    <ClInclude Include="FB2K\TrackPropertyCallback.h">
+      <Filter>FB2K</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\AlbumArt.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\CustomSort.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\EstimateLineWrap.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\FileHelper.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\FontHelper.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\ImageHelpers.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\KMeans.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\Misc.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\StackBlur.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\StringHelpers.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\Timer.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel\CallbackData.h">
+      <Filter>Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel\CallbackID.h">
+      <Filter>Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel\DropSourceImpl.h">
+      <Filter>Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel\DropTargetImpl.h">
+      <Filter>Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel\PanelConfig.h">
+      <Filter>Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel\PanelManager.h">
+      <Filter>Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel\PanelProperties.h">
+      <Filter>Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel\PanelTimer.h">
+      <Filter>Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel\PanelWindow.h">
+      <Filter>Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptHost\ScriptHost.h">
+      <Filter>ScriptHost</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptHost\ScriptInfo.h">
+      <Filter>ScriptHost</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\ComArray.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\ComTools.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\Console.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\ContextMenuManager.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\DropAction.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\Fb.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\FileInfo.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\Gdi.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\GdiBitmap.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\GdiFont.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\GdiGraphics.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\MainMenuManager.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\MenuObj.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\MetadbHandle.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\MetadbHandleList.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\PlayingItemLocation.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\Plman.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\Profiler.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\ScriptInterface.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\SelectionHolder.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\ThemeManager.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\TitleFormat.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\Tooltip.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\Utils.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\Window.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks\AsyncArtTask.h">
+      <Filter>Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks\AsyncImageTask.h">
+      <Filter>Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks\DownloadFileTask.h">
+      <Filter>Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks\HTTPRequestTask.h">
+      <Filter>Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks\ThreadPool.h">
+      <Filter>Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Config.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\DialogConfigure.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\DialogFindReplace.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\DialogGoto.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\DialogInputBox.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\DialogPlaylistLock.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\DialogProperties.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\EditorCtrl.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\KeyHack.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\PropertyList.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="db.h" />
+    <ClInclude Include="foo_jscript_panel.h" />
+    <ClInclude Include="guids.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FB2K\Callbacks.cpp">
+      <Filter>FB2K</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel\PanelManager.cpp">
+      <Filter>Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel\PanelProperties.cpp">
+      <Filter>Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel\PanelWindow.cpp">
+      <Filter>Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel\PanelWindowCUI.cpp">
+      <Filter>Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel\PanelWindowDUI.cpp">
+      <Filter>Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptHost\ScriptHost.cpp">
+      <Filter>ScriptHost</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptHost\ScriptInfo.cpp">
+      <Filter>ScriptHost</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\Console.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\ContextMenuManager.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\DropAction.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\Fb.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\FileInfo.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\Gdi.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\GdiBitmap.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\GdiFont.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\GdiGraphics.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\MainMenuManager.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\MenuObj.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\MetadbHandle.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\MetadbHandleList.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\PlayingItemLocation.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\Plman.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\Profiler.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\SelectionHolder.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\ThemeManager.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\TitleFormat.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\Tooltip.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\Utils.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInterface\Window.cpp">
+      <Filter>ScriptInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Config.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\DialogConfigure.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\DialogFindReplace.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\DialogPreferences.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\DialogProperties.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\EditorCtrl.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="db.cpp" />
+    <ClCompile Include="foo_jscript_panel.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="ScriptInterface\ScriptInterface.idl">
+      <Filter>ScriptInterface</Filter>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource\foo_jscript_panel.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,214 @@
+// ==PREPROCESSOR==
+// @name "Track Info + Spectrogram Seekbar + Buttons"
+// @author "marc2003"
+// @import "%fb2k_component_path%samples\js\lodash.min.js"
+// @import "%fb2k_component_path%samples\js\helpers.js"
+// @import "%fb2k_component_path%samples\js\panel.js"
+// @import "%fb2k_component_path%samples\js\seekbar.js"
+// ==/PREPROCESSOR==
+
+/*
+Limitations:
+Since the script passes the filename to ffmpeg for decoding and generating the spectrogram
+image, your input components are irrelevant.
+
+It only works on local files with a known length and cue sheets/files with chapters are not supported.
+
+There seems to be a maxiumum length limit and during my own testing, a 53m track was fine
+but my next longest track at 57m was not. YMMV.
+
+---
+
+You can download ffmpeg from here:
+
+https://www.gyan.dev/ffmpeg/builds/
+
+If you use a special build with libfdk-aac support, images can be generated when files encoded
+with exhale are played. See here:
+
+https://hydrogenaud.io/index.php?topic=118888.msg1006624#msg1006624
+
+The script automatically handles the differing command line arguments.
+
+Edit the executable path below if required.
+
+See here for available options which can be set via the right click menu.
+
+https://ffmpeg.org/ffmpeg-filters.html#showspectrumpic
+
+Do not set "legend" as that is already disabled.
+*/
+
+var ffmpeg_exe = fb.ProfilePath + "ffmpeg.exe"; // if you edit this, directory separators must be escaped like "d:\\audio\\tools\\ffmpeg.exe"
+var spectrogram_cache = folders.data + "spectrogram_cache\\"; // if you edit this, you must ensure the folder already exists
+
+var colours = {
+	buttons : _RGB(255, 255, 255),
+	background : _RGB(30, 30, 30),
+	title : _RGB(255, 255, 255),
+	artist : _RGB(240, 240, 240),
+	time : _RGB(240, 240, 240),
+	sac : _RGB(196, 30, 35),
+};
+
+var tfo = {
+	artist : fb.TitleFormat('%artist%'),
+	title : fb.TitleFormat('%title%'),
+	playback_time : fb.TitleFormat('%playback_time%  '),
+	length : fb.TitleFormat('  %length%')
+};
+
+//////////////////////////////////////////////////////////////
+
+var panel = new _panel();
+var seekbar = new _seekbar(0, 0, 0, 0, true);
+var buttons = new _buttons();
+var img = null;
+var bs = _scale(24);
+if (fb.IsPlaying) on_playback_new_track();
+else on_item_focus_change();
+
+buttons.update = function () {
+	var y = Math.round((panel.h - bs) / 2);
+	this.buttons.stop = new _button(panel.w - LM - (bs * 8), y, bs, bs, {normal : _chrToImg(chars.stop, fb.StopAfterCurrent ? colours.sac : colours.buttons)}, function () { fb.Stop(); }, 'Stop');
+	this.buttons.previous = new _button(panel.w - LM - (bs * 7), y, bs, bs, {normal : _chrToImg(chars.prev, colours.buttons)}, function () { fb.Prev(); }, 'Previous');
+	this.buttons.play = new _button(panel.w - LM - (bs * 6), y, bs, bs, {normal : !fb.IsPlaying || fb.IsPaused ? _chrToImg(chars.play, colours.buttons) : _chrToImg(chars.pause, colours.buttons)}, function () { fb.PlayOrPause(); }, !fb.IsPlaying || fb.IsPaused ? 'Play' : 'Pause');
+	this.buttons.next = new _button(panel.w - LM - (bs * 5), y, bs, bs, {normal : _chrToImg(chars.next, colours.buttons)}, function () { fb.Next(); }, 'Next');
+	this.buttons.console = new _button(panel.w - LM - (bs * 3), y, bs, bs, {normal : _chrToImg(chars.console, colours.buttons)}, function () { fb.ShowConsole(); }, 'Console');
+	this.buttons.search = new _button(panel.w - LM - (bs * 2), y, bs, bs, {normal : _chrToImg(chars.search, colours.buttons)}, function () { fb.RunMainMenuCommand('Library/Search'); }, 'Library Search');
+	this.buttons.preferences = new _button(panel.w - LM - bs, y, bs, bs, {normal : _chrToImg(chars.preferences, colours.buttons)}, function () { fb.ShowPreferences(); }, 'Preferences');
+}
+
+function update_album_art() {
+	_dispose(img);
+	img = null;
+	var metadb = fb.GetNowPlaying();
+	if (metadb) {
+		img = utils.GetAlbumArtV2(metadb);
+		if (img && img.Width > 200) {
+			var r = 200 / img.Width;
+			img = img.Resize(200, img.Height * r, 2);
+		}
+	}
+	window.Repaint();
+}
+
+function on_item_focus_change() {
+	seekbar.item_focus_change();
+}
+
+function on_paint(gr) {
+	gr.FillSolidRect(0, 0, panel.w, panel.h, colours.background);
+	buttons.paint(gr);
+	gr.FillSolidRect(seekbar.x, seekbar.y, seekbar.w, seekbar.h, _RGB(0, 0, 0));
+	seekbar.paint(gr);
+	if (fb.IsPlaying) {
+		if (img) {
+			_drawImage(gr, img, 0, 0, panel.h, panel.h, image.crop_top);
+		}
+		gr.GdiDrawText(tfo.title.Eval(), panel.fonts.title, colours.title, panel.h + 10, 0, seekbar.x - panel.h - _scale(60), panel.h * 0.6, LEFT);
+		gr.GdiDrawText(tfo.artist.Eval(), panel.fonts.normal, colours.artist, panel.h + 10, panel.h * 0.3, seekbar.x - panel.h - _scale(60), panel.h * 0.7, LEFT);
+		if (fb.PlaybackLength > 0) {
+			gr.GdiDrawText(tfo.playback_time.Eval(), panel.fonts.normal, colours.time, seekbar.x - _scale(45), 0, _scale(45), panel.h, RIGHT);
+			gr.GdiDrawText(tfo.length.Eval(), panel.fonts.normal, colours.time, seekbar.x + seekbar.w, 0, _scale(45), panel.h, LEFT);
+		}
+	}
+	gr.DrawRect(seekbar.x, seekbar.y, seekbar.w, seekbar.h, 1, seekbar.properties.marker_colour.value);
+}
+
+function on_mouse_lbtn_down(x, y) {
+	seekbar.lbtn_down(x, y);
+}
+
+function on_mouse_lbtn_up(x, y) {
+	if (x < panel.h && fb.IsPlaying && img) {
+		fb.GetNowPlaying().ShowAlbumArtViewer();
+		return;
+	}
+	if (buttons.lbtn_up(x, y)) {
+		return;
+	}
+	if (seekbar.lbtn_up(x, y)) {
+		return;
+	}
+	fb.RunMainMenuCommand('View/Show now playing in playlist');
+}
+
+function on_mouse_leave() {
+	buttons.leave();
+}
+
+function on_mouse_move(x, y) {
+	window.SetCursor(x < panel.h && fb.IsPlaying && img ? IDC_HAND : IDC_ARROW);
+	if (buttons.move(x, y)) {
+		return;
+	}
+	seekbar.move(x, y);
+}
+
+function on_mouse_rbtn_up(x, y) {
+	return panel.rbtn_up(x, y, seekbar);
+}
+
+function on_mouse_wheel(s) {
+	if (seekbar.wheel(s)) {
+		return;
+	}
+	if (s == 1) {
+		fb.VolumeUp();
+	} else {
+		fb.VolumeDown();
+	}
+}
+
+function on_playback_dynamic_info_track(type) {
+	if (type == 0) window.Repaint();
+	else update_album_art();
+}
+
+function on_playback_edited() {
+	window.Repaint();
+}
+
+function on_playback_new_track() {
+	update_album_art();
+	seekbar.playback_new_track();
+}
+
+function on_playback_pause() {
+	buttons.update();
+	window.Repaint();
+}
+
+function on_playback_seek() {
+	seekbar.playback_seek();
+}
+
+function on_playback_starting() {
+	buttons.update();
+	window.Repaint();
+}
+
+function on_playback_stop(reason) {
+	seekbar.playback_stop(reason);
+	buttons.update();
+	window.Repaint();
+}
+
+function on_playlist_stop_after_current_changed() {
+	buttons.update();
+	window.Repaint();
+}
+
+function on_playlist_switch() {
+	seekbar.item_focus_change();
+}
+
+function on_size() {
+	panel.size();
+	seekbar.x = _scale(300);
+	seekbar.y = _scale(10);
+	seekbar.w = panel.w - seekbar.x - _scale(280);
+	seekbar.h = panel.h - (seekbar.y * 2);
+	buttons.update();
+}
