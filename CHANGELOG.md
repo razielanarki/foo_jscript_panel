@@ -1,3 +1,6 @@
+## v2.8.5
+- Hopefully fix memory leak in various methods that return a `VBArray` containing strings.
+
 ## v2.8.4.1
 - Fix `JS Smooth Playlist / JS Smooth Playlist Manager` background wallpaper not updating when displaying art from radio streams.
 
