@@ -90,13 +90,13 @@ public:
 
 	bool add_item(const std::wstring& str)
 	{
-		_variant_t var = SysAllocString(str.data());
+		auto var = _variant_t(str.data());
 		return add_item(var);
 	}
 
 	bool add_item(jstring str)
 	{
-		_variant_t var = to_bstr(str);
+		auto var = _variant_t(to_wide(str).data());
 		return add_item(var);
 	}
 
