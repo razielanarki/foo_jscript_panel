@@ -1410,8 +1410,7 @@ function on_key_down(vkey) {
 		case VK_DELETE:
 			if (playlist_can_remove_items(g_active_playlist)) {
 				plman.UndoBackup(g_active_playlist);
-				plman.RemovePlaylistSelection(g_active_playlist, false);
-				plman.SetPlaylistSelectionSingle(g_active_playlist, getFocusId(), true);
+				plman.RemovePlaylistSelection(g_active_playlist);
 			}
 			break;
 		}
