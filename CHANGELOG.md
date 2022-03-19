@@ -1,3 +1,6 @@
+## v2.8.5.1
+- Fix a `JS Smooth Playlist` script error when the `Delete` key was used to the remove the last item(s) in a playlist.
+
 ## v2.8.5
 - Hopefully fix memory leak in various methods that return a `VBArray` containing strings.
 
