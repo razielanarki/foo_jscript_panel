@@ -4,7 +4,6 @@ using StringMap = std::map<std::string, std::string>;
 using StringPair = std::pair<std::string, std::string>;
 using Strings = std::vector<std::string>;
 using WStrings = std::vector<std::wstring>;
-using pfc::string8;
 
 static constexpr const char* CRLF = "\r\n";
 
@@ -77,17 +76,21 @@ static Strings strings_from_json(json j)
 
 static std::string from_wide(const std::wstring& str)
 {
-	std::string ret;
-	ret.resize(WideCharToMultiByte(CP_UTF8, 0, str.data(), str.length(), nullptr, 0, nullptr, nullptr));
-	WideCharToMultiByte(CP_UTF8, 0, str.data(), str.length(), ret.data(), ret.length(), nullptr, nullptr);
+	const int str_length = to_int(str.length());
+	const int ret_length = WideCharToMultiByte(CP_UTF8, 0, str.data(), str_length, nullptr, 0, nullptr, nullptr);
+
+	std::string ret(ret_length, '\0');
+	WideCharToMultiByte(CP_UTF8, 0, str.data(), str_length, ret.data(), ret_length, nullptr, nullptr);
 	return ret;
 }
 
 static std::wstring to_wide(jstring str)
 {
-	std::wstring ret;
-	ret.resize(MultiByteToWideChar(CP_UTF8, 0, str, str.length(), nullptr, 0));
-	MultiByteToWideChar(CP_UTF8, 0, str, str.length(), ret.data(), ret.length());
+	const int str_length = to_int(str.length());
+	const int ret_length = MultiByteToWideChar(CP_UTF8, 0, str, str_length, nullptr, 0);
+
+	std::wstring ret(ret_length, L'\0');
+	MultiByteToWideChar(CP_UTF8, 0, str, str_length, ret.data(), ret_length);
 	return ret;
 }
 
