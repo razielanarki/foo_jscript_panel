@@ -108,7 +108,7 @@ STDMETHODIMP GdiGraphics::DrawPolygon(__int64 colour, float line_width, VARIANT 
 
 	ComArrayReader reader;
 	std::vector<Gdiplus::PointF> point_array;
-	if (!reader.convert(points, point_array)) return E_INVALIDARG;
+	RETURN_IF_FAILED(reader.convert(points, point_array));
 
 	Gdiplus::Pen pen(to_uint(colour), line_width);
 	m_graphics->DrawPolygon(&pen, point_array.data(), point_array.size());
@@ -180,8 +180,8 @@ STDMETHODIMP GdiGraphics::EstimateLineWrap(BSTR str, IGdiFont* font, UINT width,
 	for (const auto& [text, width] : items)
 	{
 		_variant_t var = width;
-		if (!writer.add_item(text)) return E_OUTOFMEMORY;
-		if (!writer.add_item(var)) return E_OUTOFMEMORY;
+		RETURN_IF_FAILED(writer.add_item(text));
+		RETURN_IF_FAILED(writer.add_item(var));
 	}
 
 	out->vt = VT_ARRAY | VT_VARIANT;
@@ -215,7 +215,7 @@ STDMETHODIMP GdiGraphics::FillPolygon(__int64 colour, UINT fillmode, VARIANT poi
 
 	ComArrayReader reader;
 	std::vector<Gdiplus::PointF> point_array;
-	if (!reader.convert(points, point_array)) return E_INVALIDARG;
+	RETURN_IF_FAILED(reader.convert(points, point_array));
 
 	Gdiplus::SolidBrush brush(to_uint(colour));
 	m_graphics->FillPolygon(&brush, point_array.data(), point_array.size(), static_cast<Gdiplus::FillMode>(fillmode));

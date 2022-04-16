@@ -100,7 +100,7 @@ STDMETHODIMP MetadbHandleList::Convert(VARIANT* out)
 	for (const metadb_handle_ptr& handle : m_handles)
 	{
 		_variant_t var = new ComObjectImpl<MetadbHandle>(handle);
-		if (!writer.add_item(var)) return E_OUTOFMEMORY;
+		RETURN_IF_FAILED(writer.add_item(var));
 	}
 
 	out->vt = VT_ARRAY | VT_VARIANT;
@@ -133,7 +133,7 @@ STDMETHODIMP MetadbHandleList::GetLibraryRelativePaths(VARIANT* out)
 	for (const metadb_handle_ptr& handle : m_handles)
 	{
 		if (!api->get_relative_path(handle, str)) str.reset();
-		if (!writer.add_item(str)) return E_OUTOFMEMORY;
+		RETURN_IF_FAILED(writer.add_item(str));
 	}
 
 	out->vt = VT_ARRAY | VT_VARIANT;

@@ -139,7 +139,10 @@
     <ClInclude Include="ScriptHost\ScriptInfo.h">
       <Filter>ScriptHost</Filter>
     </ClInclude>
-    <ClInclude Include="ScriptInterface\ComArray.h">
+    <ClInclude Include="ScriptInterface\ComArrayReader.h">
+      <Filter>ScriptInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInterface\ComArrayWriter.h">
       <Filter>ScriptInterface</Filter>
     </ClInclude>
     <ClInclude Include="ScriptInterface\ComTools.h">

@@ -193,7 +193,7 @@ STDMETHODIMP Utils::Glob(BSTR pattern, UINT exc_mask, UINT inc_mask, VARIANT* ou
 
 	for (const std::wstring& file : files)
 	{
-		if (!writer.add_item(file)) return E_OUTOFMEMORY;
+		RETURN_IF_FAILED(writer.add_item(file));
 	}
 
 	out->vt = VT_ARRAY | VT_VARIANT;
@@ -262,7 +262,7 @@ STDMETHODIMP Utils::ListFiles(BSTR folder, VARIANT_BOOL recur, VARIANT* out)
 
 	for (const std::wstring& file : files)
 	{
-		if (!writer.add_item(file)) return E_OUTOFMEMORY;
+		RETURN_IF_FAILED(writer.add_item(file));
 	}
 
 	out->vt = VT_ARRAY | VT_VARIANT;
@@ -279,7 +279,7 @@ STDMETHODIMP Utils::ListFolders(BSTR folder, VARIANT_BOOL recur, VARIANT* out)
 
 	for (const std::wstring& folder : folders)
 	{
-		if (!writer.add_item(folder + std::filesystem::path::preferred_separator)) return E_OUTOFMEMORY;
+		RETURN_IF_FAILED(writer.add_item(folder + std::filesystem::path::preferred_separator));
 	}
 
 	out->vt = VT_ARRAY | VT_VARIANT;
@@ -296,7 +296,7 @@ STDMETHODIMP Utils::ListFonts(VARIANT* out)
 
 	for (const FontHelper::Name& name : names)
 	{
-		if (!writer.add_item(name.data())) return E_OUTOFMEMORY;
+		RETURN_IF_FAILED(writer.add_item(name.data()));
 	}
 
 	out->vt = VT_ARRAY | VT_VARIANT;

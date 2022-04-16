@@ -61,7 +61,7 @@ STDMETHODIMP TitleFormat::EvalWithMetadbs(IMetadbHandleList* handles, VARIANT* o
 	{
 		string8 str;
 		handle->format_title(nullptr, str, m_obj, nullptr);
-		if (!writer.add_item(str)) return E_OUTOFMEMORY;
+		RETURN_IF_FAILED(writer.add_item(str));
 	}
 
 	out->vt = VT_ARRAY | VT_VARIANT;

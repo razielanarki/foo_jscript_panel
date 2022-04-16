@@ -31,7 +31,7 @@ STDMETHODIMP Fb::AddLocationsAsync(UINT window_id, VARIANT locations, UINT* out)
 
 	pfc::string_list_impl list;
 	ComArrayReader reader;
-	if (!reader.convert(locations, list)) return E_INVALIDARG;
+	RETURN_IF_FAILED(reader.convert(locations, list));
 
 	constexpr uint32_t flags = playlist_incoming_item_filter_v2::op_flag_no_filter | playlist_incoming_item_filter_v2::op_flag_delay_ui;
 	auto obj = fb2k::service_new<ProcessLocationsNotifyCallback>(to_hwnd(window_id), ++m_task_id);

@@ -35,7 +35,7 @@ STDMETHODIMP Plman::AddLocations(UINT playlistIndex, VARIANT locations, VARIANT_
 
 	pfc::string_list_impl list;
 	ComArrayReader reader;
-	if (!reader.convert(locations, list)) return E_INVALIDARG;
+	RETURN_IF_FAILED(reader.convert(locations, list));
 
 	constexpr uint32_t flags = playlist_incoming_item_filter_v2::op_flag_no_filter | playlist_incoming_item_filter_v2::op_flag_delay_ui;
 	auto obj = fb2k::service_new<ProcessLocationsNotifyPlaylist>(playlistIndex, theAPI()->playlist_get_item_count(playlistIndex), to_bool(select));
@@ -400,7 +400,7 @@ STDMETHODIMP Plman::RecyclerPurge(VARIANT affectedItems)
 {
 	pfc::bit_array_bittable mask(theAPI()->recycler_get_count());
 	ComArrayReader reader;
-	if (!reader.convert(affectedItems, mask)) return E_INVALIDARG;
+	RETURN_IF_FAILED(reader.convert(affectedItems, mask));
 
 	if (mask.size())
 	{
@@ -429,7 +429,7 @@ STDMETHODIMP Plman::RemoveItemsFromPlaybackQueue(VARIANT affectedItems)
 {
 	pfc::bit_array_bittable mask(theAPI()->queue_get_count());
 	ComArrayReader reader;
-	if (!reader.convert(affectedItems, mask)) return E_INVALIDARG;
+	RETURN_IF_FAILED(reader.convert(affectedItems, mask));
 
 	if (mask.size())
 	{
@@ -462,7 +462,7 @@ STDMETHODIMP Plman::RemovePlaylists(VARIANT playlistIndexes, VARIANT_BOOL* out)
 
 	pfc::bit_array_bittable mask(theAPI()->get_playlist_count());
 	ComArrayReader reader;
-	if (!reader.convert(playlistIndexes, mask)) return E_INVALIDARG;
+	RETURN_IF_FAILED(reader.convert(playlistIndexes, mask));
 
 	*out = VARIANT_FALSE;
 
@@ -529,7 +529,7 @@ STDMETHODIMP Plman::SetPlaylistSelection(UINT playlistIndex, VARIANT affectedIte
 
 	pfc::bit_array_bittable mask(theAPI()->playlist_get_item_count(playlistIndex));
 	ComArrayReader reader;
-	if (!reader.convert(affectedItems, mask)) return E_INVALIDARG;
+	RETURN_IF_FAILED(reader.convert(affectedItems, mask));
 
 	if (mask.size())
 	{

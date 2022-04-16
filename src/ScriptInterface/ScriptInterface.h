@@ -4,7 +4,8 @@
 	if (!Y) return E_INVALIDARG;
 
 #include "ScriptInterface_h.h"
-#include "ComArray.h"
+#include "ComArrayReader.h"
+#include "ComArrayWriter.h"
 #include "ComTools.h"
 
 #include "ContextMenuManager.h"

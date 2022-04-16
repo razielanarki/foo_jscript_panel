@@ -46,8 +46,8 @@ STDMETHODIMP MetadbHandle::GetAlbumArt(UINT art_id, VARIANT_BOOL need_stub, VARI
 	_variant_t var = AlbumArt::data_to_bitmap(data);
 
 	ComArrayWriter writer(2);
-	if (!writer.add_item(var)) return E_OUTOFMEMORY;
-	if (!writer.add_item(image_path)) return E_OUTOFMEMORY;
+	RETURN_IF_FAILED(writer.add_item(var));
+	RETURN_IF_FAILED(writer.add_item(image_path));
 
 	out->vt = VT_ARRAY | VT_VARIANT;
 	out->parray = writer.data();
