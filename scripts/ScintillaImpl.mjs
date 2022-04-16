@@ -1,20 +1,10 @@
-/*
-Copyright (C) 2022 marc2003
-Generates ScintillaImpl.h from Scintilla.iface
-
-Usage: node ScintillaImpl.mjs
-*/
-
 'use strict'
 
 const filenames = {
-	'iface': new URL('./Scintilla.iface', import.meta.url),
+	'input': new URL('../scintilla-jsp/scintilla/include/Scintilla.iface', import.meta.url),
 	'template': new URL('./ScintillaImpl.template.h', import.meta.url),
-	'output': new URL('./ScintillaImpl.h', import.meta.url),
+	'output': new URL('../src/UI/ScintillaImpl.h', import.meta.url),
 }
-
-const options = 'utf8'
-const CRLF = '\r\n'
 
 const typeAliases = {
 	'cells': 'const char*',
@@ -64,6 +54,7 @@ function get_type(type) {
 }
 
 function create_body(content) {
+	const CRLF = '\r\n'
 	const lines = content.split(CRLF)
 	const features = ['fun', 'get', 'set']
 	let tmp = []
@@ -104,7 +95,7 @@ function create_body(content) {
 			}
 
 			if (ret == 'void*') str += `return reinterpret_cast<void*>(${call})`
-			else if (!basicTypes.includes(ret)) str += `return static_cast<${ret}>(${call})`
+			else if (!basicTypes.includes(ret) || ret == 'int' || ret == 'Colour' || ret == 'ColourAlpha') str += `return static_cast<${ret}>(${call})`
 			else if (ret != 'void') str += `return ${call}`
 			else str += call
 
@@ -117,7 +108,9 @@ function create_body(content) {
 }
 
 import { readFile, writeFile } from 'fs/promises'
+
+const options = 'utf8'
+const input = await readFile(filenames.input, options)
 const template = await readFile(filenames.template, options)
-const iface = await readFile(filenames.iface, options)
-await writeFile(filenames.output, template.replace('REPLACEME', create_body(iface)), options)
+await writeFile(filenames.output, template.replace('REPLACEME', create_body(input)), options)
 console.log('Done!')

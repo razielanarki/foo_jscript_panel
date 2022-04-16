@@ -182,6 +182,7 @@ copy /Y "$(TargetDir)$(TargetName).pdb" "%component_path%"</Command>
     <ClInclude Include="UI\EditorCtrl.h" />
     <ClInclude Include="UI\KeyHack.h" />
     <ClInclude Include="UI\PropertyList.h" />
+    <ClInclude Include="UI\ScintillaImpl.h" />
     <ClInclude Include="db.h" />
     <ClInclude Include="foo_jscript_panel.h" />
     <ClInclude Include="guids.h" />

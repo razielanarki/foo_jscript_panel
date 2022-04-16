@@ -27,20 +27,20 @@ public:
 	CaseInsensitiveBehaviour AutoCGetCaseInsensitiveBehaviour() { return static_cast<CaseInsensitiveBehaviour>(Call(Message::AutoCGetCaseInsensitiveBehaviour)); }
 	CaseVisible StyleGetCase(int style) { return static_cast<CaseVisible>(Call(Message::StyleGetCase, style)); }
 	CharacterSet StyleGetCharacterSet(int style) { return static_cast<CharacterSet>(Call(Message::StyleGetCharacterSet, style)); }
-	Colour GetAdditionalCaretFore() { return Call(Message::GetAdditionalCaretFore); }
-	Colour GetCaretFore() { return Call(Message::GetCaretFore); }
-	Colour GetCaretLineBack() { return Call(Message::GetCaretLineBack); }
-	Colour GetEdgeColour() { return Call(Message::GetEdgeColour); }
-	Colour GetHotspotActiveBack() { return Call(Message::GetHotspotActiveBack); }
-	Colour GetHotspotActiveFore() { return Call(Message::GetHotspotActiveFore); }
-	Colour GetMarginBackN(int margin) { return Call(Message::GetMarginBackN, margin); }
-	Colour IndicGetFore(int indicator) { return Call(Message::IndicGetFore, indicator); }
-	Colour IndicGetHoverFore(int indicator) { return Call(Message::IndicGetHoverFore, indicator); }
-	Colour StyleGetBack(int style) { return Call(Message::StyleGetBack, style); }
-	Colour StyleGetFore(int style) { return Call(Message::StyleGetFore, style); }
-	ColourAlpha GetElementBaseColour(Element element) { return Call(Message::GetElementBaseColour, static_cast<uintptr_t>(element)); }
-	ColourAlpha GetElementColour(Element element) { return Call(Message::GetElementColour, static_cast<uintptr_t>(element)); }
-	ColourAlpha GetRepresentationColour(const char* encodedCharacter) { return Call(Message::GetRepresentationColour, reinterpret_cast<uintptr_t>(encodedCharacter)); }
+	Colour GetAdditionalCaretFore() { return static_cast<Colour>(Call(Message::GetAdditionalCaretFore)); }
+	Colour GetCaretFore() { return static_cast<Colour>(Call(Message::GetCaretFore)); }
+	Colour GetCaretLineBack() { return static_cast<Colour>(Call(Message::GetCaretLineBack)); }
+	Colour GetEdgeColour() { return static_cast<Colour>(Call(Message::GetEdgeColour)); }
+	Colour GetHotspotActiveBack() { return static_cast<Colour>(Call(Message::GetHotspotActiveBack)); }
+	Colour GetHotspotActiveFore() { return static_cast<Colour>(Call(Message::GetHotspotActiveFore)); }
+	Colour GetMarginBackN(int margin) { return static_cast<Colour>(Call(Message::GetMarginBackN, margin)); }
+	Colour IndicGetFore(int indicator) { return static_cast<Colour>(Call(Message::IndicGetFore, indicator)); }
+	Colour IndicGetHoverFore(int indicator) { return static_cast<Colour>(Call(Message::IndicGetHoverFore, indicator)); }
+	Colour StyleGetBack(int style) { return static_cast<Colour>(Call(Message::StyleGetBack, style)); }
+	Colour StyleGetFore(int style) { return static_cast<Colour>(Call(Message::StyleGetFore, style)); }
+	ColourAlpha GetElementBaseColour(Element element) { return static_cast<ColourAlpha>(Call(Message::GetElementBaseColour, static_cast<uintptr_t>(element))); }
+	ColourAlpha GetElementColour(Element element) { return static_cast<ColourAlpha>(Call(Message::GetElementColour, static_cast<uintptr_t>(element))); }
+	ColourAlpha GetRepresentationColour(const char* encodedCharacter) { return static_cast<ColourAlpha>(Call(Message::GetRepresentationColour, reinterpret_cast<uintptr_t>(encodedCharacter))); }
 	CursorShape GetCursor() { return static_cast<CursorShape>(Call(Message::GetCursor)); }
 	CursorShape GetMarginCursorN(int margin) { return static_cast<CursorShape>(Call(Message::GetMarginCursorN, margin)); }
 	DocumentOption GetDocumentOptions() { return static_cast<DocumentOption>(Call(Message::GetDocumentOptions)); }
@@ -230,104 +230,105 @@ public:
 	bool StyleGetUnderline(int style) { return Call(Message::StyleGetUnderline, style); }
 	bool StyleGetVisible(int style) { return Call(Message::StyleGetVisible, style); }
 	bool SupportsFeature(Supports feature) { return Call(Message::SupportsFeature, static_cast<uintptr_t>(feature)); }
-	int AllocateExtendedStyles(int numberStyles) { return Call(Message::AllocateExtendedStyles, numberStyles); }
-	int AllocateSubStyles(int styleBase, int numberStyles) { return Call(Message::AllocateSubStyles, styleBase, numberStyles); }
-	int AnnotationGetLines(Line line) { return Call(Message::AnnotationGetLines, line); }
-	int AnnotationGetStyle(Line line) { return Call(Message::AnnotationGetStyle, line); }
-	int AnnotationGetStyleOffset() { return Call(Message::AnnotationGetStyleOffset); }
-	int AnnotationGetStyles(Line line, char* styles) { return CallPointer(Message::AnnotationGetStyles, line, styles); }
-	int AnnotationGetText(Line line, char* text) { return CallPointer(Message::AnnotationGetText, line, text); }
-	int AutoCGetCurrent() { return Call(Message::AutoCGetCurrent); }
-	int AutoCGetCurrentText(char* text) { return CallPointer(Message::AutoCGetCurrentText, 0, text); }
-	int AutoCGetMaxHeight() { return Call(Message::AutoCGetMaxHeight); }
-	int AutoCGetMaxWidth() { return Call(Message::AutoCGetMaxWidth); }
-	int AutoCGetSeparator() { return Call(Message::AutoCGetSeparator); }
-	int AutoCGetTypeSeparator() { return Call(Message::AutoCGetTypeSeparator); }
-	int ChangeLexerState(Position start, Position end) { return Call(Message::ChangeLexerState, start, end); }
-	int DescribeKeyWordSets(char* descriptions) { return CallPointer(Message::DescribeKeyWordSets, 0, descriptions); }
-	int DescribeProperty(const char* name, char* description) { return CallPointer(Message::DescribeProperty, reinterpret_cast<uintptr_t>(name), description); }
-	int DescriptionOfStyle(int style, char* description) { return CallPointer(Message::DescriptionOfStyle, style, description); }
-	int DistanceToSecondaryStyles() { return Call(Message::DistanceToSecondaryStyles); }
-	int EOLAnnotationGetStyle(Line line) { return Call(Message::EOLAnnotationGetStyle, line); }
-	int EOLAnnotationGetStyleOffset() { return Call(Message::EOLAnnotationGetStyleOffset); }
-	int EOLAnnotationGetText(Line line, char* text) { return CallPointer(Message::EOLAnnotationGetText, line, text); }
-	int GetCaretLineFrame() { return Call(Message::GetCaretLineFrame); }
-	int GetCaretPeriod() { return Call(Message::GetCaretPeriod); }
-	int GetCaretWidth() { return Call(Message::GetCaretWidth); }
-	int GetCharAt(Position pos) { return Call(Message::GetCharAt, pos); }
-	int GetCharacterCategoryOptimization() { return Call(Message::GetCharacterCategoryOptimization); }
-	int GetCodePage() { return Call(Message::GetCodePage); }
-	int GetControlCharSymbol() { return Call(Message::GetControlCharSymbol); }
-	int GetDefaultFoldDisplayText(char* text) { return CallPointer(Message::GetDefaultFoldDisplayText, 0, text); }
-	int GetExtraAscent() { return Call(Message::GetExtraAscent); }
-	int GetExtraDescent() { return Call(Message::GetExtraDescent); }
-	int GetFontLocale(char* localeName) { return CallPointer(Message::GetFontLocale, 0, localeName); }
-	int GetIdentifier() { return Call(Message::GetIdentifier); }
-	int GetIndent() { return Call(Message::GetIndent); }
-	int GetIndicatorCurrent() { return Call(Message::GetIndicatorCurrent); }
-	int GetIndicatorValue() { return Call(Message::GetIndicatorValue); }
-	int GetLayoutThreads() { return Call(Message::GetLayoutThreads); }
-	int GetLexer() { return Call(Message::GetLexer); }
-	int GetLexerLanguage(char* language) { return CallPointer(Message::GetLexerLanguage, 0, language); }
-	int GetLineIndentation(Line line) { return Call(Message::GetLineIndentation, line); }
-	int GetLineState(Line line) { return Call(Message::GetLineState, line); }
-	int GetMainSelection() { return Call(Message::GetMainSelection); }
-	int GetMarginLeft() { return Call(Message::GetMarginLeft); }
-	int GetMarginMaskN(int margin) { return Call(Message::GetMarginMaskN, margin); }
-	int GetMarginRight() { return Call(Message::GetMarginRight); }
-	int GetMarginWidthN(int margin) { return Call(Message::GetMarginWidthN, margin); }
-	int GetMargins() { return Call(Message::GetMargins); }
-	int GetMaxLineState() { return Call(Message::GetMaxLineState); }
-	int GetMouseDwellTime() { return Call(Message::GetMouseDwellTime); }
-	int GetNamedStyles() { return Call(Message::GetNamedStyles); }
-	int GetNextTabStop(Line line, int x) { return Call(Message::GetNextTabStop, line, x); }
-	int GetPositionCache() { return Call(Message::GetPositionCache); }
-	int GetPrimaryStyleFromStyle(int style) { return Call(Message::GetPrimaryStyleFromStyle, style); }
-	int GetPrintMagnification() { return Call(Message::GetPrintMagnification); }
-	int GetProperty(const char* key, char* value) { return CallPointer(Message::GetProperty, reinterpret_cast<uintptr_t>(key), value); }
-	int GetPropertyExpanded(const char* key, char* value) { return CallPointer(Message::GetPropertyExpanded, reinterpret_cast<uintptr_t>(key), value); }
-	int GetPropertyInt(const char* key, int defaultValue) { return Call(Message::GetPropertyInt, reinterpret_cast<uintptr_t>(key), defaultValue); }
-	int GetPunctuationChars(char* characters) { return CallPointer(Message::GetPunctuationChars, 0, characters); }
-	int GetRectangularSelectionModifier() { return Call(Message::GetRectangularSelectionModifier); }
-	int GetRepresentation(const char* encodedCharacter, char* representation) { return CallPointer(Message::GetRepresentation, reinterpret_cast<uintptr_t>(encodedCharacter), representation); }
-	int GetScrollWidth() { return Call(Message::GetScrollWidth); }
-	int GetSelections() { return Call(Message::GetSelections); }
-	int GetStyleAt(Position pos) { return Call(Message::GetStyleAt, pos); }
-	int GetStyleFromSubStyle(int subStyle) { return Call(Message::GetStyleFromSubStyle, subStyle); }
-	int GetSubStyleBases(char* styles) { return CallPointer(Message::GetSubStyleBases, 0, styles); }
-	int GetSubStylesLength(int styleBase) { return Call(Message::GetSubStylesLength, styleBase); }
-	int GetSubStylesStart(int styleBase) { return Call(Message::GetSubStylesStart, styleBase); }
-	int GetTabMinimumWidth() { return Call(Message::GetTabMinimumWidth); }
-	int GetTabWidth() { return Call(Message::GetTabWidth); }
-	int GetTag(int tagNumber, char* tagValue) { return CallPointer(Message::GetTag, tagNumber, tagValue); }
-	int GetWhitespaceChars(char* characters) { return CallPointer(Message::GetWhitespaceChars, 0, characters); }
-	int GetWhitespaceSize() { return Call(Message::GetWhitespaceSize); }
-	int GetWordChars(char* characters) { return CallPointer(Message::GetWordChars, 0, characters); }
-	int GetWrapStartIndent() { return Call(Message::GetWrapStartIndent); }
-	int GetXOffset() { return Call(Message::GetXOffset); }
-	int GetZoom() { return Call(Message::GetZoom); }
-	int IndicGetStrokeWidth(int indicator) { return Call(Message::IndicGetStrokeWidth, indicator); }
-	int IndicatorAllOnFor(Position pos) { return Call(Message::IndicatorAllOnFor, pos); }
-	int IndicatorValueAt(int indicator, Position pos) { return Call(Message::IndicatorValueAt, indicator, pos); }
-	int MarginGetStyle(Line line) { return Call(Message::MarginGetStyle, line); }
-	int MarginGetStyleOffset() { return Call(Message::MarginGetStyleOffset); }
-	int MarginGetStyles(Line line, char* styles) { return CallPointer(Message::MarginGetStyles, line, styles); }
-	int MarginGetText(Line line, char* text) { return CallPointer(Message::MarginGetText, line, text); }
-	int MarkerAdd(Line line, int markerNumber) { return Call(Message::MarkerAdd, line, markerNumber); }
-	int MarkerGet(Line line) { return Call(Message::MarkerGet, line); }
-	int MarkerHandleFromLine(Line line, int which) { return Call(Message::MarkerHandleFromLine, line, which); }
-	int MarkerNumberFromLine(Line line, int which) { return Call(Message::MarkerNumberFromLine, line, which); }
-	int MarkerSymbolDefined(int markerNumber) { return Call(Message::MarkerSymbolDefined, markerNumber); }
-	int NameOfStyle(int style, char* name) { return CallPointer(Message::NameOfStyle, style, name); }
-	int PointXFromPosition(Position pos) { return Call(Message::PointXFromPosition, 0, pos); }
-	int PointYFromPosition(Position pos) { return Call(Message::PointYFromPosition, 0, pos); }
-	int PropertyNames(char* names) { return CallPointer(Message::PropertyNames, 0, names); }
-	int StyleGetFont(int style, char* fontName) { return CallPointer(Message::StyleGetFont, style, fontName); }
-	int StyleGetSize(int style) { return Call(Message::StyleGetSize, style); }
-	int StyleGetSizeFractional(int style) { return Call(Message::StyleGetSizeFractional, style); }
-	int TagsOfStyle(int style, char* tags) { return CallPointer(Message::TagsOfStyle, style, tags); }
-	int TextHeight(Line line) { return Call(Message::TextHeight, line); }
-	int TextWidth(int style, const char* text) { return CallString(Message::TextWidth, style, text); }
+	int AllocateExtendedStyles(int numberStyles) { return static_cast<int>(Call(Message::AllocateExtendedStyles, numberStyles)); }
+	int AllocateSubStyles(int styleBase, int numberStyles) { return static_cast<int>(Call(Message::AllocateSubStyles, styleBase, numberStyles)); }
+	int AnnotationGetLines(Line line) { return static_cast<int>(Call(Message::AnnotationGetLines, line)); }
+	int AnnotationGetStyle(Line line) { return static_cast<int>(Call(Message::AnnotationGetStyle, line)); }
+	int AnnotationGetStyleOffset() { return static_cast<int>(Call(Message::AnnotationGetStyleOffset)); }
+	int AnnotationGetStyles(Line line, char* styles) { return static_cast<int>(CallPointer(Message::AnnotationGetStyles, line, styles)); }
+	int AnnotationGetText(Line line, char* text) { return static_cast<int>(CallPointer(Message::AnnotationGetText, line, text)); }
+	int AutoCGetCurrent() { return static_cast<int>(Call(Message::AutoCGetCurrent)); }
+	int AutoCGetCurrentText(char* text) { return static_cast<int>(CallPointer(Message::AutoCGetCurrentText, 0, text)); }
+	int AutoCGetMaxHeight() { return static_cast<int>(Call(Message::AutoCGetMaxHeight)); }
+	int AutoCGetMaxWidth() { return static_cast<int>(Call(Message::AutoCGetMaxWidth)); }
+	int AutoCGetSeparator() { return static_cast<int>(Call(Message::AutoCGetSeparator)); }
+	int AutoCGetTypeSeparator() { return static_cast<int>(Call(Message::AutoCGetTypeSeparator)); }
+	int ChangeLexerState(Position start, Position end) { return static_cast<int>(Call(Message::ChangeLexerState, start, end)); }
+	int DescribeKeyWordSets(char* descriptions) { return static_cast<int>(CallPointer(Message::DescribeKeyWordSets, 0, descriptions)); }
+	int DescribeProperty(const char* name, char* description) { return static_cast<int>(CallPointer(Message::DescribeProperty, reinterpret_cast<uintptr_t>(name), description)); }
+	int DescriptionOfStyle(int style, char* description) { return static_cast<int>(CallPointer(Message::DescriptionOfStyle, style, description)); }
+	int DistanceToSecondaryStyles() { return static_cast<int>(Call(Message::DistanceToSecondaryStyles)); }
+	int EOLAnnotationGetStyle(Line line) { return static_cast<int>(Call(Message::EOLAnnotationGetStyle, line)); }
+	int EOLAnnotationGetStyleOffset() { return static_cast<int>(Call(Message::EOLAnnotationGetStyleOffset)); }
+	int EOLAnnotationGetText(Line line, char* text) { return static_cast<int>(CallPointer(Message::EOLAnnotationGetText, line, text)); }
+	int GetCaretLineFrame() { return static_cast<int>(Call(Message::GetCaretLineFrame)); }
+	int GetCaretPeriod() { return static_cast<int>(Call(Message::GetCaretPeriod)); }
+	int GetCaretWidth() { return static_cast<int>(Call(Message::GetCaretWidth)); }
+	int GetCharAt(Position pos) { return static_cast<int>(Call(Message::GetCharAt, pos)); }
+	int GetCharacterCategoryOptimization() { return static_cast<int>(Call(Message::GetCharacterCategoryOptimization)); }
+	int GetCodePage() { return static_cast<int>(Call(Message::GetCodePage)); }
+	int GetControlCharSymbol() { return static_cast<int>(Call(Message::GetControlCharSymbol)); }
+	int GetDefaultFoldDisplayText(char* text) { return static_cast<int>(CallPointer(Message::GetDefaultFoldDisplayText, 0, text)); }
+	int GetExtraAscent() { return static_cast<int>(Call(Message::GetExtraAscent)); }
+	int GetExtraDescent() { return static_cast<int>(Call(Message::GetExtraDescent)); }
+	int GetFontLocale(char* localeName) { return static_cast<int>(CallPointer(Message::GetFontLocale, 0, localeName)); }
+	int GetIdentifier() { return static_cast<int>(Call(Message::GetIdentifier)); }
+	int GetIndent() { return static_cast<int>(Call(Message::GetIndent)); }
+	int GetIndicatorCurrent() { return static_cast<int>(Call(Message::GetIndicatorCurrent)); }
+	int GetIndicatorValue() { return static_cast<int>(Call(Message::GetIndicatorValue)); }
+	int GetLayoutThreads() { return static_cast<int>(Call(Message::GetLayoutThreads)); }
+	int GetLexer() { return static_cast<int>(Call(Message::GetLexer)); }
+	int GetLexerLanguage(char* language) { return static_cast<int>(CallPointer(Message::GetLexerLanguage, 0, language)); }
+	int GetLineIndentation(Line line) { return static_cast<int>(Call(Message::GetLineIndentation, line)); }
+	int GetLineState(Line line) { return static_cast<int>(Call(Message::GetLineState, line)); }
+	int GetMainSelection() { return static_cast<int>(Call(Message::GetMainSelection)); }
+	int GetMarginLeft() { return static_cast<int>(Call(Message::GetMarginLeft)); }
+	int GetMarginMaskN(int margin) { return static_cast<int>(Call(Message::GetMarginMaskN, margin)); }
+	int GetMarginRight() { return static_cast<int>(Call(Message::GetMarginRight)); }
+	int GetMarginWidthN(int margin) { return static_cast<int>(Call(Message::GetMarginWidthN, margin)); }
+	int GetMargins() { return static_cast<int>(Call(Message::GetMargins)); }
+	int GetMaxLineState() { return static_cast<int>(Call(Message::GetMaxLineState)); }
+	int GetMouseDwellTime() { return static_cast<int>(Call(Message::GetMouseDwellTime)); }
+	int GetNamedStyles() { return static_cast<int>(Call(Message::GetNamedStyles)); }
+	int GetNextTabStop(Line line, int x) { return static_cast<int>(Call(Message::GetNextTabStop, line, x)); }
+	int GetPositionCache() { return static_cast<int>(Call(Message::GetPositionCache)); }
+	int GetPrimaryStyleFromStyle(int style) { return static_cast<int>(Call(Message::GetPrimaryStyleFromStyle, style)); }
+	int GetPrintMagnification() { return static_cast<int>(Call(Message::GetPrintMagnification)); }
+	int GetProperty(const char* key, char* value) { return static_cast<int>(CallPointer(Message::GetProperty, reinterpret_cast<uintptr_t>(key), value)); }
+	int GetPropertyExpanded(const char* key, char* value) { return static_cast<int>(CallPointer(Message::GetPropertyExpanded, reinterpret_cast<uintptr_t>(key), value)); }
+	int GetPropertyInt(const char* key, int defaultValue) { return static_cast<int>(Call(Message::GetPropertyInt, reinterpret_cast<uintptr_t>(key), defaultValue)); }
+	int GetPunctuationChars(char* characters) { return static_cast<int>(CallPointer(Message::GetPunctuationChars, 0, characters)); }
+	int GetRectangularSelectionModifier() { return static_cast<int>(Call(Message::GetRectangularSelectionModifier)); }
+	int GetRepresentation(const char* encodedCharacter, char* representation) { return static_cast<int>(CallPointer(Message::GetRepresentation, reinterpret_cast<uintptr_t>(encodedCharacter), representation)); }
+	int GetScrollWidth() { return static_cast<int>(Call(Message::GetScrollWidth)); }
+	int GetSelections() { return static_cast<int>(Call(Message::GetSelections)); }
+	int GetStyleAt(Position pos) { return static_cast<int>(Call(Message::GetStyleAt, pos)); }
+	int GetStyleFromSubStyle(int subStyle) { return static_cast<int>(Call(Message::GetStyleFromSubStyle, subStyle)); }
+	int GetStyleIndexAt(Position pos) { return static_cast<int>(Call(Message::GetStyleIndexAt, pos)); }
+	int GetSubStyleBases(char* styles) { return static_cast<int>(CallPointer(Message::GetSubStyleBases, 0, styles)); }
+	int GetSubStylesLength(int styleBase) { return static_cast<int>(Call(Message::GetSubStylesLength, styleBase)); }
+	int GetSubStylesStart(int styleBase) { return static_cast<int>(Call(Message::GetSubStylesStart, styleBase)); }
+	int GetTabMinimumWidth() { return static_cast<int>(Call(Message::GetTabMinimumWidth)); }
+	int GetTabWidth() { return static_cast<int>(Call(Message::GetTabWidth)); }
+	int GetTag(int tagNumber, char* tagValue) { return static_cast<int>(CallPointer(Message::GetTag, tagNumber, tagValue)); }
+	int GetWhitespaceChars(char* characters) { return static_cast<int>(CallPointer(Message::GetWhitespaceChars, 0, characters)); }
+	int GetWhitespaceSize() { return static_cast<int>(Call(Message::GetWhitespaceSize)); }
+	int GetWordChars(char* characters) { return static_cast<int>(CallPointer(Message::GetWordChars, 0, characters)); }
+	int GetWrapStartIndent() { return static_cast<int>(Call(Message::GetWrapStartIndent)); }
+	int GetXOffset() { return static_cast<int>(Call(Message::GetXOffset)); }
+	int GetZoom() { return static_cast<int>(Call(Message::GetZoom)); }
+	int IndicGetStrokeWidth(int indicator) { return static_cast<int>(Call(Message::IndicGetStrokeWidth, indicator)); }
+	int IndicatorAllOnFor(Position pos) { return static_cast<int>(Call(Message::IndicatorAllOnFor, pos)); }
+	int IndicatorValueAt(int indicator, Position pos) { return static_cast<int>(Call(Message::IndicatorValueAt, indicator, pos)); }
+	int MarginGetStyle(Line line) { return static_cast<int>(Call(Message::MarginGetStyle, line)); }
+	int MarginGetStyleOffset() { return static_cast<int>(Call(Message::MarginGetStyleOffset)); }
+	int MarginGetStyles(Line line, char* styles) { return static_cast<int>(CallPointer(Message::MarginGetStyles, line, styles)); }
+	int MarginGetText(Line line, char* text) { return static_cast<int>(CallPointer(Message::MarginGetText, line, text)); }
+	int MarkerAdd(Line line, int markerNumber) { return static_cast<int>(Call(Message::MarkerAdd, line, markerNumber)); }
+	int MarkerGet(Line line) { return static_cast<int>(Call(Message::MarkerGet, line)); }
+	int MarkerHandleFromLine(Line line, int which) { return static_cast<int>(Call(Message::MarkerHandleFromLine, line, which)); }
+	int MarkerNumberFromLine(Line line, int which) { return static_cast<int>(Call(Message::MarkerNumberFromLine, line, which)); }
+	int MarkerSymbolDefined(int markerNumber) { return static_cast<int>(Call(Message::MarkerSymbolDefined, markerNumber)); }
+	int NameOfStyle(int style, char* name) { return static_cast<int>(CallPointer(Message::NameOfStyle, style, name)); }
+	int PointXFromPosition(Position pos) { return static_cast<int>(Call(Message::PointXFromPosition, 0, pos)); }
+	int PointYFromPosition(Position pos) { return static_cast<int>(Call(Message::PointYFromPosition, 0, pos)); }
+	int PropertyNames(char* names) { return static_cast<int>(CallPointer(Message::PropertyNames, 0, names)); }
+	int StyleGetFont(int style, char* fontName) { return static_cast<int>(CallPointer(Message::StyleGetFont, style, fontName)); }
+	int StyleGetSize(int style) { return static_cast<int>(Call(Message::StyleGetSize, style)); }
+	int StyleGetSizeFractional(int style) { return static_cast<int>(Call(Message::StyleGetSizeFractional, style)); }
+	int TagsOfStyle(int style, char* tags) { return static_cast<int>(CallPointer(Message::TagsOfStyle, style, tags)); }
+	int TextHeight(Line line) { return static_cast<int>(Call(Message::TextHeight, line)); }
+	int TextWidth(int style, const char* text) { return static_cast<int>(CallString(Message::TextWidth, style, text)); }
 	void AddRefDocument(void* doc) { CallPointer(Message::AddRefDocument, 0, doc); }
 	void AddSelection(Position caret, Position anchor) { Call(Message::AddSelection, caret, anchor); }
 	void AddStyledText(Position length, const char* c) { CallString(Message::AddStyledText, length, c); }
@@ -802,12 +803,12 @@ private:
 	{
 		return Call(msg, wParam, reinterpret_cast<intptr_t>(s));
 	}
-	
+
 	intptr_t CallString(Message msg, uintptr_t wParam, const char* s)
 	{
 		return Call(msg, wParam, reinterpret_cast<intptr_t>(s));
 	}
 
-	FunctionDirect fn;
-	intptr_t ptr;
+	FunctionDirect fn{};
+	intptr_t ptr{};
 };

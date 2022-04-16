@@ -1,5 +1,5 @@
 #pragma once
-#include <ScintillaImpl.h>
+#include "ScintillaImpl.h"
 
 class CDialogFindReplace;
 

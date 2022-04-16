@@ -33,12 +33,12 @@ private:
 	{
 		return Call(msg, wParam, reinterpret_cast<intptr_t>(s));
 	}
-	
+
 	intptr_t CallString(Message msg, uintptr_t wParam, const char* s)
 	{
 		return Call(msg, wParam, reinterpret_cast<intptr_t>(s));
 	}
 
-	FunctionDirect fn;
-	intptr_t ptr;
+	FunctionDirect fn{};
+	intptr_t ptr{};
 };

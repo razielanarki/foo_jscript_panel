@@ -262,6 +262,9 @@
     <ClInclude Include="UI\PropertyList.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="UI\ScintillaImpl.h">
+      <Filter>UI</Filter>
+    </ClInclude>
     <ClInclude Include="db.h" />
     <ClInclude Include="foo_jscript_panel.h" />
     <ClInclude Include="guids.h" />
