@@ -1,7 +1,7 @@
 ppt.tf_album_sort = fb.TitleFormat(window.GetProperty("SMOOTH.SORT.ALBUM", "%album artist% | %date% | %album% | %discnumber% | %tracknumber% | %title%"));
 ppt.tf_artist_sort = fb.TitleFormat(window.GetProperty("SMOOTH.SORT.ARTIST", "$meta(artist,0) | %date% | %album% | %discnumber% | %tracknumber% | %title%"));
 ppt.tf_album_artist_sort = fb.TitleFormat(window.GetProperty("SMOOTH.SORT.ALBUM.ARTIST", "%album artist% | %date% | %album% | %discnumber% | %tracknumber% | %title%"));
-ppt.tf_groupkey_album = fb.TitleFormat("$if2(%album artist%,Unknown Artist) ^^ [%album%]");
+ppt.tf_groupkey_album = fb.TitleFormat("$if2(%album artist%,Unknown Artist) ^^ $if2(%album%,'('Singles')')");
 ppt.tf_groupkey_artist = fb.TitleFormat("$if2($meta(artist,0),Unknown Artist)");
 ppt.tf_groupkey_album_artist = fb.TitleFormat("%album artist%");
 ppt.tf_crc_artist = fb.TitleFormat("$crc32(artists$meta(artist,0))");
@@ -35,7 +35,7 @@ function oGroup(index, start, metadb, groupkey) {
 
 	var arr = this.groupkey.split(" ^^ ");
 	this.artist = arr[0];
-	this.album = arr[1] || (this.metadb && this.metadb.Length ? "(Singles)" : "Stream");
+	this.album = arr[1] || "";
 
 	if (metadb) {
 		switch (ppt.tagMode) {
@@ -315,19 +315,21 @@ function oBrowser() {
 		var ah = this.rowHeight;
 
 		for (var i = g_start_; i < g_end_; i++) {
+			var group = this.groups[i];
+
 			var row = Math.floor(i / this.totalColumns);
 			ax = this.x + (cx * this.thumbnailWidth);
 			ay = Math.floor(this.y + (row * this.rowHeight) - scroll_);
-			this.groups[i].x = ax;
-			this.groups[i].y = ay;
+			group.x = ax;
+			group.y = ay;
 
 			var normal_text = g_color_normal_txt;
 			var fader_txt = blendColors(g_color_normal_txt, g_color_normal_bg, 0.25);
 
-			if (!this.groups[i].cover_image && !this.groups[i].image_requested && this.groups[i].metadb) {
-				this.groups[i].image_requested = true;
-				var filename = generate_filename(this.groups[i].cachekey, AlbumArtId.front);
-				this.groups[i].cover_image = get_art(this.groups[i].metadb, filename, ppt.tagMode == 0 ? AlbumArtId.front : AlbumArtId.artist);
+			if (!group.cover_image && !group.image_requested && group.metadb) {
+				group.image_requested = true;
+				var filename = generate_filename(group.cachekey, AlbumArtId.front);
+				group.cover_image = get_art(group.metadb, filename, ppt.tagMode == 0 ? AlbumArtId.front : AlbumArtId.artist);
 			}
 
 			switch (ppt.panelMode) {
@@ -356,17 +358,17 @@ function oBrowser() {
 					if (ppt.showAllItem && i == 0 && this.groups.length > 1) {
 						drawImage(gr, images.all, ax + text_left, ay + text_left, cover_size, cover_size, ppt.autoFill, normal_text & 0x25ffffff);
 					} else {
-						drawImage(gr, this.groups[i].cover_image || (this.groups[i].metadb.Length ? images.noart : images.stream), ax + text_left, ay + text_left, cover_size, cover_size, ppt.autoFill, normal_text & 0x25ffffff);
+						drawImage(gr, group.cover_image || images.noart, ax + text_left, ay + text_left, cover_size, cover_size, ppt.autoFill, normal_text & 0x25ffffff);
 					}
 					text_left += cover_size + 8;
 					text_width = aw - text_left - 16;
 				}
 
 				if (ppt.tagMode == 0) { // album, 2 lines
-					gr.GdiDrawText(this.groups[i].album, g_font_bold, normal_text, ax + text_left, ay + (ah / 2) - g_font_bold_height - 2, text_width, g_font_bold_height + 2, DT_LEFT | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
-					gr.GdiDrawText(this.groups[i].artist, g_font, fader_txt, ax + text_left, ay + (ah / 2) + 2, text_width, g_font_height + 2, DT_LEFT | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
+					gr.GdiDrawText(group.album, g_font_bold, normal_text, ax + text_left, ay + (ah / 2) - g_font_bold_height - 2, text_width, g_font_bold_height + 2, DT_LEFT | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
+					gr.GdiDrawText(group.artist, g_font, fader_txt, ax + text_left, ay + (ah / 2) + 2, text_width, g_font_height + 2, DT_LEFT | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
 				} else { // artist/album artist, 1 line
-					gr.GdiDrawText(this.groups[i].artist, g_font, normal_text, ax + text_left, ay, text_width, ah, DT_LEFT | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
+					gr.GdiDrawText(group.artist, g_font, normal_text, ax + text_left, ay, text_width, ah, DT_LEFT | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
 				}
 				break;
 			case 2:
@@ -377,7 +379,7 @@ function oBrowser() {
 				if (i == this.selectedIndex) {
 					gr.FillSolidRect(ax, ay, aw, ah, g_color_selected_bg & 0xb0ffffff);
 					gr.DrawRect(ax + 1, ay + 1, aw - 2, ah - 2, 2.0, g_color_selected_bg);
-					gr.FillSolidRect(ax + text_left, ay + text_left, cover_size, cover_size, g_color_normal_bg);
+					if (!group.cover_image) gr.FillSolidRect(ax + text_left, ay + text_left, cover_size, cover_size, g_color_normal_bg);
 					if (normal_text == g_color_selected_bg) {
 						normal_text = g_color_normal_bg;
 						fader_txt = blendColors(normal_text, g_color_normal_bg, 0.25);
@@ -387,16 +389,17 @@ function oBrowser() {
 				}
 
 				if (ppt.showAllItem && i == 0 && this.groups.length > 1) {
+					gr.FillSolidRect(ax + text_left, ay + text_left, cover_size, cover_size, g_color_normal_bg);
 					drawImage(gr, images.all, ax + text_left, ay + text_left, cover_size, cover_size, ppt.autoFill, normal_text & 0x25ffffff);
 				} else {
-					drawImage(gr, this.groups[i].cover_image || (this.groups[i].metadb.Length ? images.noart : images.stream), ax + text_left, ay + text_left, cover_size, cover_size, ppt.autoFill, normal_text & 0x25ffffff);
+					drawImage(gr, group.cover_image || images.noart, ax + text_left, ay + text_left, cover_size, cover_size, ppt.autoFill, normal_text & 0x25ffffff);
 				}
 
 				if (ppt.tagMode == 0) {
-					gr.GdiDrawText(this.groups[i].album, g_font_bold, normal_text, ax + text_left, ay + cover_size + (text_left * 2), cover_size, g_font_bold_height + 2, DT_CENTER | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
-					gr.GdiDrawText(this.groups[i].artist, g_font, fader_txt, ax + text_left, ay + cover_size + (text_left * 2) + (g_font_bold_height * 1.4), cover_size, g_font_height + 2, DT_CENTER | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
+					gr.GdiDrawText(group.album, g_font_bold, normal_text, ax + text_left, ay + cover_size + (text_left * 2), cover_size, g_font_bold_height + 2, DT_CENTER | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
+					gr.GdiDrawText(group.artist, g_font, fader_txt, ax + text_left, ay + cover_size + (text_left * 2) + (g_font_bold_height * 1.4), cover_size, g_font_height + 2, DT_CENTER | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
 				} else {
-					gr.GdiDrawText(this.groups[i].artist, g_font_bold, normal_text, ax + text_left, ay + cover_size + (text_left * 2) - 2, cover_size, g_font_bold_height * 3, DT_CENTER | DT_TOP | DT_CALCRECT | DT_WORDBREAK | DT_NOPREFIX);
+					gr.GdiDrawText(group.artist, g_font_bold, normal_text, ax + text_left, ay + cover_size + (text_left * 2) - 2, cover_size, g_font_bold_height * 3, DT_CENTER | DT_TOP | DT_CALCRECT | DT_WORDBREAK | DT_NOPREFIX);
 				}
 
 				break;
@@ -404,15 +407,15 @@ function oBrowser() {
 				if (ppt.showAllItem && i == 0 && this.groups.length > 1) {
 					drawImage(gr, images.all, ax, ay, aw, ah, true, normal_text & 0x25ffffff);
 				} else {
-					drawImage(gr, this.groups[i].cover_image || (this.groups[i].metadb.Length ? images.noart : images.stream), ax, ay, aw, ah, true, normal_text & 0x25ffffff);
+					drawImage(gr, group.cover_image || images.noart, ax, ay, aw, ah, true, normal_text & 0x25ffffff);
 					var h = g_font_height * 3;
 					var hh = h / 2;
 					gr.FillGradRect(ax, ay + ah - h, aw, h, 90, RGBA(0, 0, 0, 230), RGBA(0, 0, 0, 200));
 					if (ppt.tagMode == 0) {
-						gr.GdiDrawText(this.groups[i].album, g_font_bold, RGB(240, 240, 240), ax + 8, ay + ah - h + 2, aw - 16, hh, DT_LEFT | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
-						gr.GdiDrawText(this.groups[i].artist, g_font, RGB(230, 230, 230), ax + 8, ay + ah - hh - 2, aw - 16, hh, DT_LEFT | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
+						gr.GdiDrawText(group.album, g_font_bold, RGB(240, 240, 240), ax + 8, ay + ah - h + 2, aw - 16, hh, DT_LEFT | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
+						gr.GdiDrawText(group.artist, g_font, RGB(230, 230, 230), ax + 8, ay + ah - hh - 2, aw - 16, hh, DT_LEFT | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
 					} else {
-						gr.GdiDrawText(this.groups[i].artist, g_font, RGB(230, 230, 230), ax + 8, ay + ah - h, aw - 16, h, DT_LEFT | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
+						gr.GdiDrawText(group.artist, g_font, RGB(230, 230, 230), ax + 8, ay + ah - h, aw - 16, h, DT_LEFT | DT_VCENTER | DT_CALCRECT | DT_END_ELLIPSIS | DT_NOPREFIX);
 					}
 				}
 				if (i == this.selectedIndex || i == g_rightClickedIndex) {
@@ -587,7 +590,6 @@ function oBrowser() {
 	this.settings_context_menu = function (x, y) {
 		var _menu = window.CreatePopupMenu();
 		var _menu1 = window.CreatePopupMenu();
-		var _menu2 = window.CreatePopupMenu();
 
 		_menu.AppendMenuItem(MF_STRING, 1, "Header Bar");
 		_menu.CheckMenuItem(1, ppt.showHeaderBar);
@@ -601,23 +603,23 @@ function oBrowser() {
 		_menu1.AppendMenuItem(colour_flag, 4, "Background");
 		_menu1.AppendMenuItem(colour_flag, 5, "Selected background");
 		_menu1.AppendTo(_menu, MF_STRING, "Custom colours");
+		_menu.AppendMenuSeparator();
 
-		_menu2.AppendMenuItem(MF_STRING, 20, "Album");
-		_menu2.AppendMenuItem(MF_STRING, 21, "Artist");
-		_menu2.AppendMenuItem(MF_STRING, 22, "Album Artist");
-		_menu2.CheckMenuRadioItem(20, 22, 20 + ppt.tagMode);
-		_menu2.AppendMenuSeparator();
-		_menu2.AppendMenuItem(MF_STRING, 30, "Column");
-		_menu2.AppendMenuItem(MF_STRING, 31, "Column + Album Art");
-		_menu2.AppendMenuItem(MF_STRING, 32, "Album Art Grid (Original style)");
-		_menu2.AppendMenuItem(MF_STRING, 33, "Album Art Grid (Overlayed text)");
-		_menu2.CheckMenuRadioItem(30, 33, 30 + ppt.panelMode);
-		_menu2.AppendMenuSeparator();
-		_menu2.AppendMenuItem(MF_STRING, 40, "Show all items");
-		_menu2.CheckMenuItem(40, ppt.showAllItem);
-		_menu2.AppendMenuItem(ppt.panelMode == 0 || ppt.panelMode == 3 ? MF_GRAYED : MF_STRING, 41, "Album Art: Auto-fill");
-		_menu2.CheckMenuItem(41, ppt.autoFill);
-		_menu2.AppendTo(_menu, MF_STRING, "Display");
+		_menu.AppendMenuItem(MF_STRING, 20, "Album");
+		_menu.AppendMenuItem(MF_STRING, 21, "Artist");
+		_menu.AppendMenuItem(MF_STRING, 22, "Album Artist");
+		_menu.CheckMenuRadioItem(20, 22, 20 + ppt.tagMode);
+		_menu.AppendMenuSeparator();
+		_menu.AppendMenuItem(MF_STRING, 30, "Column");
+		_menu.AppendMenuItem(MF_STRING, 31, "Column + Album Art");
+		_menu.AppendMenuItem(MF_STRING, 32, "Album Art Grid (Original style)");
+		_menu.AppendMenuItem(MF_STRING, 33, "Album Art Grid (Overlayed text)");
+		_menu.CheckMenuRadioItem(30, 33, 30 + ppt.panelMode);
+		_menu.AppendMenuSeparator();
+		_menu.AppendMenuItem(MF_STRING, 40, "Show all items");
+		_menu.CheckMenuItem(40, ppt.showAllItem);
+		_menu.AppendMenuItem(ppt.panelMode == 0 || ppt.panelMode == 3 ? MF_GRAYED : MF_STRING, 41, "Album Art: Auto-fill");
+		_menu.CheckMenuItem(41, ppt.autoFill);
 
 		_menu.AppendMenuSeparator();
 		_menu.AppendMenuItem(MF_STRING, 50, "Panel Properties");
@@ -676,7 +678,8 @@ function oBrowser() {
 		case 41:
 			ppt.autoFill = !ppt.autoFill;
 			window.SetProperty("SMOOTH.AUTO.FILL", ppt.autoFill);
-			reload();
+			images.clear();
+			this.populate();
 			break;
 		case 50:
 			window.ShowProperties();
@@ -685,7 +688,6 @@ function oBrowser() {
 			window.ShowConfigure();
 			break;
 		}
-		_menu2.Dispose();
 		_menu1.Dispose();
 		_menu.Dispose();
 		return true;

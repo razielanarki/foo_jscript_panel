@@ -943,7 +943,8 @@ function oBrowser() {
 		case 19:
 			ppt.autoFill = !ppt.autoFill;
 			window.SetProperty("SMOOTH.AUTO.FILL", ppt.autoFill);
-			reload();
+			images.clear();
+			this.populate();
 			break;
 		case 20:
 			ppt.doubleRowText = !ppt.doubleRowText;

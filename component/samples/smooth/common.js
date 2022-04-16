@@ -50,12 +50,6 @@ function play(playlist, item) {
 	}
 }
 
-function reload() {
-	window.SetTimeout(function () {
-		window.Reload();
-	}, 50);
-}
-
 function reset_cover_timers() {
 	if (timers.coverDone) {
 		window.ClearTimeout(timers.coverDone);
@@ -445,6 +439,12 @@ var StringAlignment = {
 
 var images = {
 	cache : {},
+	clear : function () {
+		for (var i in this.cache) {
+			this.cache[i].Dispose();
+		}
+		this.cache = {};
+	}
 }
 
 var timers = {
