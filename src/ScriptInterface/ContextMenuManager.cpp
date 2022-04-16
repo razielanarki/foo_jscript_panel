@@ -6,7 +6,8 @@ STDMETHODIMP ContextMenuManager::BuildMenu(IMenuObj* obj, int base_id)
 	if (m_cm.is_empty()) return E_POINTER;
 
 	HMENU menu;
-	obj->get__HMENU(&menu);
+	RETURN_IF_FAILED(obj->get__HMENU(&menu));
+
 	contextmenu_node* parent = m_cm->get_root();
 	m_cm->win32_build_menu(menu, parent, base_id, -1);
 	return S_OK;

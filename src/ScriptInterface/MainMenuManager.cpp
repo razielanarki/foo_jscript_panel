@@ -6,7 +6,8 @@ STDMETHODIMP MainMenuManager::BuildMenu(IMenuObj* obj, UINT base_id)
 	if (m_mm.is_empty()) return E_POINTER;
 
 	HMENU menu;
-	obj->get__HMENU(&menu);
+	RETURN_IF_FAILED(obj->get__HMENU(&menu));
+
 	m_mm->generate_menu_win32(menu, base_id, SIZE_MAX, mainmenu_manager::flag_show_shortcuts);
 	return S_OK;
 }

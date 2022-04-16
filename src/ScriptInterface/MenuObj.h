@@ -18,7 +18,8 @@ protected:
 	void FinalRelease() override;
 
 private:
+	bool is_menu();
+
 	CWindow m_wnd_parent;
-	HMENU m_hMenu = nullptr;
-	bool m_has_detached = false;
+	wil::unique_hmenu m_hMenu;
 };
