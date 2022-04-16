@@ -1,6 +1,4 @@
 #pragma once
-#include <libPPUI/CListControlComplete.h>
-#include <libPPUI/CListControl-Cells.h>
 
 class PropertyList : public CListControlComplete
 {

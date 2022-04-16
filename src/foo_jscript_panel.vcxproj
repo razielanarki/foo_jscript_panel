@@ -56,7 +56,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>..\foobar2000-sdk;..\foobar2000-sdk\wtl;..\lib;..\scintilla-jsp\lexilla\include;..\scintilla-jsp\scintilla\include;..\src;..\src\FB2K;..\src\Helpers;..\src\Panel;..\src\ScriptHost;..\src\ScriptInterface;..\src\Tasks;..\src\UI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\foobar2000-sdk;..\foobar2000-sdk\lib;..\foobar2000-sdk\lib\wtl;..\scintilla-jsp\lexilla\include;..\scintilla-jsp\scintilla\include;..\src\FB2K;..\src\Helpers;..\src\Panel;..\src\ScriptHost;..\src\ScriptInterface;..\src\Tasks;..\src\UI;..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DiagnosticsFormat>Caret</DiagnosticsFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -85,7 +85,7 @@ copy /Y "$(TargetDir)$(TargetName).pdb" "%component_path%"</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>..\foobar2000-sdk;..\foobar2000-sdk\wtl;..\lib;..\scintilla-jsp\lexilla\include;..\scintilla-jsp\scintilla\include;..\src;..\src\FB2K;..\src\Helpers;..\src\Panel;..\src\ScriptHost;..\src\ScriptInterface;..\src\Tasks;..\src\UI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\foobar2000-sdk;..\foobar2000-sdk\lib;..\foobar2000-sdk\lib\wtl;..\scintilla-jsp\lexilla\include;..\scintilla-jsp\scintilla\include;..\src\FB2K;..\src\Helpers;..\src\Panel;..\src\ScriptHost;..\src\ScriptInterface;..\src\Tasks;..\src\UI;..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DiagnosticsFormat>Caret</DiagnosticsFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -248,7 +248,7 @@ copy /Y "$(TargetDir)$(TargetName).pdb" "%component_path%"</Command>
     <ResourceCompile Include="Resource\foo_jscript_panel.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\columns_ui-sdk\columns_ui-sdk.vcxproj">
+    <ProjectReference Include="..\foobar2000-sdk\columns_ui-sdk\columns_ui-sdk.vcxproj">
       <Project>{93ec0ede-01cd-4fb0-b8e8-4f2a027e026e}</Project>
     </ProjectReference>
     <ProjectReference Include="..\foobar2000-sdk\foobar2000\foobar2000_component_client\foobar2000_component_client.vcxproj">

@@ -1,8 +1,6 @@
 #pragma once
 #include "EditorCtrl.h"
 
-#include <libPPUI/CDialogResizeHelper.h>
-
 class PanelWindow;
 
 class CDialogConfigure : public CDialogImpl<CDialogConfigure>

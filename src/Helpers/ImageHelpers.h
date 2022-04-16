@@ -1,7 +1,7 @@
 #pragma once
 #ifdef NDEBUG
 #include <libwebp/decode.h>
-#pragma comment(lib, "../lib/libwebp/libwebpdecoder.lib")
+#pragma comment(lib, "../foobar2000-sdk/lib/libwebp/libwebp.lib")
 #endif
 
 using ImageData = std::vector<uint8_t>;

@@ -3,13 +3,9 @@
 	X->get__ptr(reinterpret_cast<void**>(&Y)); \
 	if (!Y) return E_INVALIDARG;
 
-#include <ActivScp.h>
-#include <ComDef.h>
-using VariantArgs = std::vector<_variant_t>;
-
+#include "ScriptInterface_h.h"
 #include "ComArray.h"
 #include "ComTools.h"
-#include "ScriptInterface_h.h"
 
 #include "ContextMenuManager.h"
 #include "DropAction.h"
@@ -34,3 +30,7 @@ using VariantArgs = std::vector<_variant_t>;
 #include "Plman.h"
 #include "Utils.h"
 #include "Window.h"
+
+#include "CallbackID.h"
+#include "CallbackData.h"
+#include "guids.h"

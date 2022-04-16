@@ -11,26 +11,42 @@
 #include <numeric>
 #include <ranges>
 #include <set>
+#include <string>
 #include <vector>
 
-#include "../columns_ui-sdk/ui_extension.h"
-#include <foobar2000/helpers/foobar2000+atl.h>
-#include <foobar2000/helpers/atl-misc.h>
-#include <libPPUI/gdiplus_helpers.h>
-#include <nlohmann/json.hpp>
-using json = nlohmann::json;
+#include <WinSock2.h>
+#include <Windows.h>
+#include <windowsx.h>
+#include <Uxtheme.h>
+#include <ActivScp.h>
+#include <ComDef.h>
 
+#include <json.hpp>
 #include <wil/com.h>
 #include <wil/resource.h>
+#include <wil/stl.h>
+#include <wil/win32_helpers.h>
+
+#include <foobar2000/helpers/foobar2000+atl.h>
+#include <foobar2000/helpers/atl-misc.h>
+#include <libPPUI/CDialogResizeHelper.h>
+#include <libPPUI/CListControlComplete.h>
+#include <libPPUI/CListControl-Cells.h>
+#include <libPPUI/CListControlOwnerData.h>
+#include <libPPUI/Controls.h>
+#include <libPPUI/gdiplus_helpers.h>
+#include <libPPUI/pp-COM-macros.h>
+#include <columns_ui-sdk/ui_extension.h>
+
+using VariantArgs = std::vector<_variant_t>;
+using json = nlohmann::json;
+using pfc::string8;
+
+#include "foo_jscript_panel.h"
+#include "resource.h"
 
 #include "Misc.h"
 #include "StringHelpers.h"
 #include "FileHelper.h"
+
 #include "ScriptInterface.h"
-
-#include "foo_jscript_panel.h"
-#include "guids.h"
-#include "resource.h"
-
-#include "CallbackID.h"
-#include "CallbackData.h"

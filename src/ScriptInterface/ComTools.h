@@ -1,7 +1,6 @@
 #pragma once
 
 extern wil::com_ptr_t<ITypeLib> g_type_lib;
-struct IDisposable;
 
 #define QI_HELPER_BEGIN(first) \
 	STDMETHODIMP QueryInterface(REFIID riid, void** ppv) override \
