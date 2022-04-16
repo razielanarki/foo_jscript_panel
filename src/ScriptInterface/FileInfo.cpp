@@ -3,14 +3,6 @@
 
 FileInfo::FileInfo(const metadb_info_container::ptr& info) : m_info(info) {}
 
-STDMETHODIMP FileInfo::get__ptr(void** out)
-{
-	if (!out) return E_POINTER;
-
-	*out = m_info.get_ptr();
-	return S_OK;
-}
-
 STDMETHODIMP FileInfo::InfoFind(BSTR name, int* out)
 {
 	if (m_info.is_empty() || !out) return E_POINTER;

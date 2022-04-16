@@ -5,7 +5,6 @@ class FileInfo : public JSDisposableImpl<IFileInfo>
 public:
 	FileInfo(const metadb_info_container::ptr& info);
 
-	STDMETHODIMP get__ptr(void** out) override;
 	STDMETHODIMP InfoFind(BSTR name, int* out) override;
 	STDMETHODIMP InfoName(UINT idx, BSTR* out) override;
 	STDMETHODIMP InfoValue(UINT idx, BSTR* out) override;
