@@ -81,38 +81,38 @@ STDMETHODIMP ScriptHost::GetItemInfo(LPCOLESTR name, DWORD mask, IUnknown** ppun
 
 		if (wcscmp(name, L"console") == 0)
 		{
-			(*ppunk) = m_console.get();
-			(*ppunk)->AddRef();
+			m_console->AddRef();
+			*ppunk = m_console.get();
 			return S_OK;
 		}
 		else if (wcscmp(name, L"fb") == 0)
 		{
-			(*ppunk) = m_fb.get();
-			(*ppunk)->AddRef();
+			m_fb->AddRef();
+			*ppunk = m_fb.get();
 			return S_OK;
 		}
 		else if (wcscmp(name, L"gdi") == 0)
 		{
-			(*ppunk) = m_gdi.get();
-			(*ppunk)->AddRef();
+			m_gdi->AddRef();
+			*ppunk = m_gdi.get();
 			return S_OK;
 		}
 		else if (wcscmp(name, L"plman") == 0)
 		{
-			(*ppunk) = m_plman.get();
-			(*ppunk)->AddRef();
+			m_plman->AddRef();
+			*ppunk = m_plman.get();
 			return S_OK;
 		}
 		else if (wcscmp(name, L"utils") == 0)
 		{
-			(*ppunk) = m_utils.get();
-			(*ppunk)->AddRef();
+			m_utils->AddRef();
+			*ppunk = m_utils.get();
 			return S_OK;
 		}
 		else if (wcscmp(name, L"window") == 0)
 		{
-			(*ppunk) = m_window.get();
-			(*ppunk)->AddRef();
+			m_window->AddRef();
+			*ppunk = m_window.get();
 			return S_OK;
 		}
 	}
@@ -222,11 +222,11 @@ bool ScriptHost::Initialise()
 		return false;
 	}
 
-	wil::com_ptr_t<IActiveScriptProperty> script_property;
-	_variant_t version = static_cast<LONG>(SCRIPTLANGUAGEVERSION_5_8 + 1);
-
-	const auto result = [&]()
+	const auto result = [this]()
 	{
+		wil::com_ptr_t<IActiveScriptProperty> script_property;
+		auto version = _variant_t(static_cast<long>(SCRIPTLANGUAGEVERSION_5_8 + 1));
+
 		RETURN_IF_FAILED(m_script_engine->QueryInterface(&script_property));
 		RETURN_IF_FAILED(script_property->SetProperty(SCRIPTPROP_INVOKEVERSIONING, nullptr, &version));
 		RETURN_IF_FAILED(m_script_engine->SetScriptSite(this));
