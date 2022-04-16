@@ -1,6 +1,5 @@
 #pragma once
 
-using PathString = std::array<wchar_t, MAX_PATH>;
 using StringMap = std::map<std::string, std::string>;
 using StringPair = std::pair<std::string, std::string>;
 using Strings = std::vector<std::string>;

@@ -5,7 +5,6 @@
 class FileHelper
 {
 public:
-	FileHelper(const PathString& path) : m_path(path.data()) {}
 	FileHelper(const std::wstring& path) : m_path(path) {}
 	FileHelper(jstring path) : m_path(to_wide(path)) {}
 

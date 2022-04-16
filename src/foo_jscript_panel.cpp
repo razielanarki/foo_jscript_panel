@@ -27,15 +27,13 @@ namespace Component
 
 	std::wstring get_path()
 	{
-		PathString path;
-		GetModuleFileNameW(core_api::get_my_instance(), path.data(), path.size());
+		const std::wstring path = wil::GetModuleFileNameW<std::wstring>(core_api::get_my_instance());
 		return FileHelper(path).parent_path();
 	}
 
 	std::wstring get_fb2k_path()
 	{
-		PathString path;
-		GetModuleFileNameW(nullptr, path.data(), path.size());
+		const std::wstring path = wil::GetModuleFileNameW<std::wstring>(nullptr);
 		return FileHelper(path).parent_path();
 	}
 

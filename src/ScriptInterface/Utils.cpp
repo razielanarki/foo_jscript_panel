@@ -341,7 +341,7 @@ STDMETHODIMP Utils::ReadINI(BSTR path, BSTR section, BSTR key, BSTR defaultval, 
 {
 	if (!out) return E_POINTER;
 
-	PathString buffer;
+	std::array<wchar_t, MAX_PATH> buffer;
 	GetPrivateProfileStringW(section, key, defaultval, buffer.data(), buffer.size(), path);
 	*out = SysAllocString(buffer.data());
 	return S_OK;
