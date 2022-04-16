@@ -3,7 +3,7 @@
 class DropSourceImpl : public ImplementCOMRefCounter<IDropSource>
 {
 public:
-	QI_HELPER(IDropSource)
+	COM_QI_SIMPLE(IDropSource)
 
 	STDMETHODIMP GiveFeedback(DWORD dwEffect) override
 	{

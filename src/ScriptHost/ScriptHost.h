@@ -6,7 +6,7 @@ class ScriptHost : public ImplementCOMRefCounter<IActiveScriptSite>
 public:
 	ScriptHost(PanelWindow* panel);
 
-	QI_HELPER(IActiveScriptSite)
+	COM_QI_SIMPLE(IActiveScriptSite)
 
 	STDMETHODIMP GetDocVersionString(BSTR*) override;
 	STDMETHODIMP GetItemInfo(LPCOLESTR name, DWORD mask, IUnknown** ppunk, ITypeInfo** ppti) override;

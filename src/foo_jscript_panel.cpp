@@ -2,8 +2,6 @@
 #define SDK_STRING_(x) #x
 #define SDK_STRING(x) SDK_STRING_(x)
 
-wil::com_ptr_t<ITypeLib> g_type_lib;
-
 namespace Component
 {
 	DECLARE_COMPONENT_VERSION(
@@ -20,17 +18,6 @@ namespace Component
 	VALIDATE_COMPONENT_FILENAME("foo_jscript_panel.dll");
 
 	GdiplusScope scope;
-
-	extern "C" BOOL WINAPI DllMain(HINSTANCE ins, DWORD reason, LPVOID)
-	{
-		if (reason == DLL_PROCESS_ATTACH)
-		{
-			PathString path;
-			GetModuleFileNameW(ins, path.data(), path.size());
-			return SUCCEEDED(LoadTypeLibEx(path.data(), REGKIND_NONE, &g_type_lib));
-		}
-		return TRUE;
-	}
 
 	std::string get_resource_text(int id)
 	{

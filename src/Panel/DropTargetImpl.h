@@ -6,7 +6,7 @@ class DropTargetImpl : public ImplementCOMRefCounter<IDropTarget>
 public:
 	DropTargetImpl(PanelWindow* panel) : m_panel(panel), m_action(new ImplementCOMRefCounter<DropAction>()) {}
 
-	QI_HELPER(IDropTarget)
+	COM_QI_SIMPLE(IDropTarget)
 
 	STDMETHODIMP DragEnter(IDataObject* pDataObj, DWORD grfKeyState, POINTL pt, DWORD* pdwEffect) override
 	{

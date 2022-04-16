@@ -1,29 +1,6 @@
 #pragma once
 
-extern wil::com_ptr_t<ITypeLib> g_type_lib;
-
-#define QI_HELPER_BEGIN(first) \
-	STDMETHODIMP QueryInterface(REFIID riid, void** ppv) override \
-	{ \
-		if (!ppv) return E_POINTER; \
-		*ppv = nullptr; \
-		IUnknown* temp = nullptr; \
-		if (riid == __uuidof(IUnknown)) temp = static_cast<IUnknown*>(static_cast<first*>(this)); \
-		else if (riid == __uuidof(first)) temp = static_cast<first*>(this);
-
-#define QI_HELPER_ENTRY(entry) \
-		else if (riid == __uuidof(entry)) temp = static_cast<entry*>(this);
-
-#define QI_HELPER_END() \
-		else return E_NOINTERFACE; \
-		temp->AddRef(); \
-		*ppv = temp; \
-		return S_OK; \
-	}
-
-#define QI_HELPER(what) QI_HELPER_BEGIN(what) QI_HELPER_END()
-#define QI_HELPER_DISPATCH(what) QI_HELPER_BEGIN(IDispatch) QI_HELPER_ENTRY(what) QI_HELPER_END()
-#define QI_HELPER_DISPOSABLE(what) QI_HELPER_BEGIN(IDispatch) QI_HELPER_ENTRY(IDisposable) QI_HELPER_ENTRY(what) QI_HELPER_END()
+static wil::com_ptr_t<ITypeLib> g_type_lib;
 
 struct TypeInfoCache
 {
@@ -35,15 +12,22 @@ template <typename T>
 class JSDispatchImplBase : public T
 {
 protected:
-	JSDispatchImplBase<T>()
+	JSDispatchImplBase()
 	{
+		if (!g_type_lib)
+		{
+			const HINSTANCE ins = core_api::get_my_instance();
+			const std::wstring path = wil::GetModuleFileNameW<std::wstring>(ins);
+			LoadTypeLibEx(path.data(), REGKIND_NONE, &g_type_lib);
+		}
+
 		if (!s_type_info_cache.type_info)
 		{
 			g_type_lib->GetTypeInfoOfGuid(__uuidof(T), &s_type_info_cache.type_info);
 		}
 	}
 
-	virtual ~JSDispatchImplBase<T>() {}
+	virtual ~JSDispatchImplBase() {}
 
 public:
 	STDMETHODIMP GetIDsOfNames(REFIID, OLECHAR** names, UINT cNames, LCID, DISPID* dispids) override
@@ -58,8 +42,7 @@ public:
 		}
 		else
 		{
-			const HRESULT hr = s_type_info_cache.type_info->GetIDsOfNames(&names[0], 1, &dispids[0]);
-			if (FAILED(hr)) return hr;
+			RETURN_IF_FAILED(s_type_info_cache.type_info->GetIDsOfNames(&names[0], 1, &dispids[0]));
 			s_type_info_cache.cache.emplace(hash, dispids[0]);
 		}
 		return S_OK;
@@ -69,6 +52,7 @@ public:
 	{
 		if (!out) return E_POINTER;
 		if (i != 0) return DISP_E_BADINDEX;
+
 		s_type_info_cache.type_info->AddRef();
 		*out = s_type_info_cache.type_info.get();
 		return S_OK;
@@ -77,6 +61,7 @@ public:
 	STDMETHODIMP GetTypeInfoCount(UINT* n) override
 	{
 		if (!n) return E_POINTER;
+
 		*n = 1;
 		return S_OK;
 	}
@@ -99,24 +84,33 @@ template <typename T>
 class JSDispatchImpl : public JSDispatchImplBase<T>
 {
 protected:
-	JSDispatchImpl<T>() {}
-	~JSDispatchImpl<T>() {}
+	JSDispatchImpl() {}
+	~JSDispatchImpl() {}
 
 public:
-	QI_HELPER_DISPATCH(T)
+	COM_QI_BEGIN()
+		COM_QI_ENTRY(IUnknown)
+		COM_QI_ENTRY(IDispatch)
+		COM_QI_ENTRY(T)
+	COM_QI_END()
 };
 
 template <typename T>
 class JSDisposableImpl : public JSDispatchImplBase<T>
 {
 protected:
-	JSDisposableImpl<T>() {}
-	~JSDisposableImpl<T>() {}
+	JSDisposableImpl() {}
+	~JSDisposableImpl() {}
 
 	virtual void FinalRelease() = 0;
 
 public:
-	QI_HELPER_DISPOSABLE(T)
+	COM_QI_BEGIN()
+		COM_QI_ENTRY(IUnknown)
+		COM_QI_ENTRY(IDispatch)
+		COM_QI_ENTRY(IDisposable)
+		COM_QI_ENTRY(T)
+	COM_QI_END()
 
 	STDMETHODIMP Dispose() override
 	{
