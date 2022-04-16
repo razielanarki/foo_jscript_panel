@@ -12,6 +12,7 @@ public:
 	STDMETHODIMP MetaName(UINT idx, BSTR* out) override;
 	STDMETHODIMP MetaValue(UINT idx, UINT vidx, BSTR* out) override;
 	STDMETHODIMP MetaValueCount(UINT idx, UINT* out) override;
+
 	STDMETHODIMP get_InfoCount(UINT* out) override;
 	STDMETHODIMP get_MetaCount(UINT* out) override;
 

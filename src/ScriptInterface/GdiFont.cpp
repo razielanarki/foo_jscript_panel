@@ -33,8 +33,10 @@ STDMETHODIMP GdiFont::get__HFONT(HFONT* out)
 	return S_OK;
 }
 
-STDMETHODIMP GdiFont::get__ptr(void** out)
+STDMETHODIMP GdiFont::get(void** out)
 {
+	if (!m_font || !out) return E_POINTER;
+
 	*out = m_font.get();
 	return S_OK;
 }

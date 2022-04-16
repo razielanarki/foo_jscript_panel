@@ -54,7 +54,7 @@ library foo_jscript_panel
 	[uuid(7efbd443-4f6f-4cb2-9eee-882b9b19cbf6)]
 	interface IGdiBitmap : IDisposable
 	{
-		HRESULT get__ptr([out, retval] void** out);
+		HRESULT get([out, retval] void** out);
 		HRESULT ApplyAlpha(UINT8 alpha, [out, retval] IGdiBitmap** out);
 		HRESULT ApplyMask(IGdiBitmap* image, [out, retval] VARIANT_BOOL* out);
 		HRESULT Clone(float x, float y, float w, float h, [out, retval] IGdiBitmap** out);
@@ -74,7 +74,7 @@ library foo_jscript_panel
 	interface IGdiFont : IDisposable
 	{
 		HRESULT get__HFONT([out, retval] HFONT* out);
-		HRESULT get__ptr([out, retval] void** out);
+		HRESULT get([out, retval] void** out);
 		[propget] HRESULT Height([out, retval] UINT* out);
 		[propget] HRESULT Name([out, retval] BSTR* out);
 		[propget] HRESULT Size([out, retval] float* out);
@@ -84,7 +84,7 @@ library foo_jscript_panel
 	[uuid(9d6e404f-5ba7-4470-88d5-eb5980dffc07)]
 	interface IGdiGraphics : IDispatch
 	{
-		HRESULT get__ptr([out, retval] void** out);
+		HRESULT get([out, retval] void** out);
 		HRESULT put__ptr(void* g);
 		HRESULT CalcTextHeight(BSTR str, IGdiFont* font, [out, retval] UINT* out);
 		HRESULT CalcTextWidth(BSTR str, IGdiFont* font, [out, retval] UINT* out);
@@ -130,7 +130,7 @@ library foo_jscript_panel
 	[uuid(0e1980d3-916a-482e-af87-578bcb1a4a25)]
 	interface IMetadbHandle : IDisposable
 	{
-		HRESULT get__ptr([out, retval] void** out);
+		HRESULT get([out, retval] void** out);
 		HRESULT ClearStats();
 		HRESULT Compare(IMetadbHandle* handle, [out, retval] VARIANT_BOOL* out);
 		HRESULT GetAlbumArt([defaultvalue(0)] UINT art_id, [defaultvalue(-1)] VARIANT_BOOL need_stub, [out, retval] VARIANT* out);
@@ -152,7 +152,7 @@ library foo_jscript_panel
 	[uuid(64528708-ae09-49dd-8e8d-1417fe9a9f09)]
 	interface IMetadbHandleList : IDisposable
 	{
-		HRESULT get__ptr([out, retval] void** out);
+		HRESULT get([out, retval] void** out);
 		HRESULT Add(IMetadbHandle* handle);
 		HRESULT AddRange(IMetadbHandleList* handles);
 		HRESULT AttachImage(BSTR path, [defaultvalue(0)] UINT art_id);
@@ -225,7 +225,7 @@ library foo_jscript_panel
 	[uuid(998d8666-b446-4e92-8e8f-797d3cce4b7e)]
 	interface ITitleFormat : IDisposable
 	{
-		HRESULT get__ptr([out, retval] void** out);
+		HRESULT get([out, retval] void** out);
 		HRESULT Eval([out, retval] BSTR* out);
 		HRESULT EvalActivePlaylistItem(UINT playlistItemIndex, [out, retval] BSTR* out);
 		HRESULT EvalWithMetadb(IMetadbHandle* handle, [out, retval] BSTR* out);

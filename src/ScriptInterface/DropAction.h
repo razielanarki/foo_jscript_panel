@@ -4,6 +4,7 @@ class DropAction : public JSDispatchImpl<IDropAction>
 {
 public:
 	STDMETHODIMP get_Effect(UINT* out) override;
+
 	STDMETHODIMP put_Base(UINT base) override;
 	STDMETHODIMP put_Effect(UINT effect) override;
 	STDMETHODIMP put_Playlist(UINT id) override;

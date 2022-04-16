@@ -36,6 +36,7 @@ public:
 	STDMETHODIMP TimestampToDateString(UINT64 ts, BSTR* out) override;
 	STDMETHODIMP WriteINI(BSTR path, BSTR section, BSTR key, BSTR val, VARIANT_BOOL* out) override;
 	STDMETHODIMP WriteTextFile(BSTR path, BSTR content, VARIANT_BOOL* out) override;
+
 	STDMETHODIMP get_Version(UINT* out) override;
 
 private:

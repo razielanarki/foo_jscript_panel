@@ -5,8 +5,10 @@
 
 GdiBitmap::GdiBitmap(UniqueBitmap bitmap) : m_bitmap(std::move(bitmap)) {}
 
-STDMETHODIMP GdiBitmap::get__ptr(void** out)
+STDMETHODIMP GdiBitmap::get(void** out)
 {
+	if (!m_bitmap || !out) return E_POINTER;
+
 	*out = m_bitmap.get();
 	return S_OK;
 }
@@ -31,7 +33,7 @@ STDMETHODIMP GdiBitmap::ApplyMask(IGdiBitmap* image, VARIANT_BOOL* out)
 	if (!m_bitmap || !out) return E_POINTER;
 
 	Gdiplus::Bitmap* bitmap_mask = nullptr;
-	GET_PTR(image, bitmap_mask);
+	RETURN_IF_FAILED(image->get(arg_helper(&bitmap_mask)));
 
 	if (bitmap_mask->GetHeight() != m_bitmap->GetHeight() || bitmap_mask->GetWidth() != m_bitmap->GetWidth()) return E_INVALIDARG;
 
@@ -153,7 +155,7 @@ STDMETHODIMP GdiBitmap::InvertColours(IGdiBitmap** out)
 STDMETHODIMP GdiBitmap::ReleaseGraphics(IGdiGraphics* gr)
 {
 	Gdiplus::Graphics* graphics = nullptr;
-	GET_PTR(gr, graphics);
+	RETURN_IF_FAILED(gr->get(arg_helper(&graphics)));
 	gr->put__ptr(nullptr);
 	if (graphics) delete graphics;
 	return S_OK;

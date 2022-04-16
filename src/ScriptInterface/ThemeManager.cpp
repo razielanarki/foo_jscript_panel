@@ -8,7 +8,7 @@ STDMETHODIMP ThemeManager::DrawThemeBackground(IGdiGraphics* gr, int x, int y, i
 	if (!m_theme) return E_POINTER;
 
 	Gdiplus::Graphics* graphics = nullptr;
-	GET_PTR(gr, graphics);
+	RETURN_IF_FAILED(gr->get(arg_helper(&graphics)));
 
 	const CRect rect(x, y, x + w, y + h);
 	HDC dc = graphics->GetHDC();

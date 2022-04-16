@@ -287,7 +287,7 @@ STDMETHODIMP Plman::InsertPlaylistItems(UINT playlistIndex, UINT base, IMetadbHa
 	RETURN_IF_FAILED(check_playlist_index(playlistIndex));
 
 	metadb_handle_list* handles_ptr = nullptr;
-	GET_PTR(handles, handles_ptr);
+	RETURN_IF_FAILED(handles->get(arg_helper(&handles_ptr)));
 
 	theAPI()->playlist_insert_items(playlistIndex, base, *handles_ptr, pfc::bit_array_val(to_bool(select)));
 	return S_OK;
@@ -298,7 +298,7 @@ STDMETHODIMP Plman::InsertPlaylistItemsFilter(UINT playlistIndex, UINT base, IMe
 	RETURN_IF_FAILED(check_playlist_index(playlistIndex));
 
 	metadb_handle_list* handles_ptr = nullptr;
-	GET_PTR(handles, handles_ptr);
+	RETURN_IF_FAILED(handles->get(arg_helper(&handles_ptr)));
 
 	theAPI()->playlist_insert_items_filter(playlistIndex, base, *handles_ptr, to_bool(select));
 	return S_OK;
@@ -516,10 +516,10 @@ STDMETHODIMP Plman::SetPlaylistFocusItemByHandle(UINT playlistIndex, IMetadbHand
 {
 	RETURN_IF_FAILED(check_playlist_index(playlistIndex));
 
-	metadb_handle* ptr = nullptr;
-	GET_PTR(handle, ptr);
+	metadb_handle* handle_ptr = nullptr;
+	RETURN_IF_FAILED(handle->get(arg_helper(&handle_ptr)));
 
-	theAPI()->playlist_set_focus_by_handle(playlistIndex, ptr);
+	theAPI()->playlist_set_focus_by_handle(playlistIndex, handle_ptr);
 	return S_OK;
 }
 

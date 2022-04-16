@@ -5,9 +5,9 @@
 
 MetadbHandle::MetadbHandle(const metadb_handle_ptr& handle) : m_handle(handle) {}
 
-STDMETHODIMP MetadbHandle::get__ptr(void** out)
+STDMETHODIMP MetadbHandle::get(void** out)
 {
-	if (!out) return E_POINTER;
+	if (m_handle.is_empty() || !out) return E_POINTER;
 
 	*out = m_handle.get_ptr();
 	return S_OK;
@@ -29,10 +29,10 @@ STDMETHODIMP MetadbHandle::Compare(IMetadbHandle* handle, VARIANT_BOOL* out)
 {
 	if (m_handle.is_empty() || !out) return E_POINTER;
 
-	metadb_handle* ptr = nullptr;
-	GET_PTR(handle, ptr);
+	metadb_handle* handle_ptr = nullptr;
+	RETURN_IF_FAILED(handle->get(arg_helper(&handle_ptr)));
 
-	*out = to_variant_bool(ptr == m_handle.get_ptr());
+	*out = to_variant_bool(handle_ptr == m_handle.get_ptr());
 	return S_OK;
 }
 

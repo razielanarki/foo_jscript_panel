@@ -93,10 +93,10 @@ STDMETHODIMP Utils::GetAlbumArtAsync(UINT window_id, IMetadbHandle* handle, UINT
 {
 	if (!AlbumArt::check_id(art_id)) return E_INVALIDARG;
 
-	metadb_handle* ptr = nullptr;
-	GET_PTR(handle, ptr);
+	metadb_handle* handle_ptr = nullptr;
+	RETURN_IF_FAILED(handle->get(arg_helper(&handle_ptr)));
 
-	auto task = std::make_unique<AsyncArtTask>(to_hwnd(window_id), ptr, art_id, to_bool(need_stub), to_bool(only_embed));
+	auto task = std::make_unique<AsyncArtTask>(to_hwnd(window_id), handle_ptr, art_id, to_bool(need_stub), to_bool(only_embed));
 	SimpleThreadPool::get().add_task(std::move(task));
 	return S_OK;
 }
@@ -116,11 +116,11 @@ STDMETHODIMP Utils::GetAlbumArtV2(IMetadbHandle* handle, UINT art_id, VARIANT_BO
 	if (!out) return E_POINTER;
 	if (!AlbumArt::check_id(art_id)) return E_INVALIDARG;
 
-	metadb_handle* ptr = nullptr;
-	GET_PTR(handle, ptr);
+	metadb_handle* handle_ptr = nullptr;
+	RETURN_IF_FAILED(handle->get(arg_helper(&handle_ptr)));
 
 	string8 dummy;
-	album_art_data_ptr data = AlbumArt::get(ptr, art_id, to_bool(need_stub), dummy);
+	album_art_data_ptr data = AlbumArt::get(handle_ptr, art_id, to_bool(need_stub), dummy);
 	*out = AlbumArt::data_to_bitmap(data);
 	return S_OK;
 }

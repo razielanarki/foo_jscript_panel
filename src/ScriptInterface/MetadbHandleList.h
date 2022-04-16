@@ -5,7 +5,8 @@ class MetadbHandleList : public JSDisposableImpl<IMetadbHandleList>
 public:
 	MetadbHandleList(metadb_handle_list_cref handles);
 
-	STDMETHODIMP get__ptr(void** out) override;
+	STDMETHODIMP get(void** out) override;
+
 	STDMETHODIMP Add(IMetadbHandle* handle) override;
 	STDMETHODIMP AddRange(IMetadbHandleList* handles) override;
 	STDMETHODIMP AttachImage(BSTR path, UINT art_id) override;
@@ -37,8 +38,10 @@ public:
 	STDMETHODIMP RemoveRange(UINT from, UINT count) override;
 	STDMETHODIMP SaveAs(BSTR path) override;
 	STDMETHODIMP UpdateFileInfoFromJSON(BSTR str) override;
+
 	STDMETHODIMP get_Count(UINT* out) override;
 	STDMETHODIMP get_Item(UINT index, IMetadbHandle** out) override;
+
 	STDMETHODIMP put_Item(UINT index, IMetadbHandle* handle) override;
 
 protected:

@@ -14,7 +14,7 @@
 
 MetadbHandleList::MetadbHandleList(metadb_handle_list_cref handles) : m_handles(handles) {}
 
-STDMETHODIMP MetadbHandleList::get__ptr(void** out)
+STDMETHODIMP MetadbHandleList::get(void** out)
 {
 	if (!out) return E_POINTER;
 
@@ -24,17 +24,17 @@ STDMETHODIMP MetadbHandleList::get__ptr(void** out)
 
 STDMETHODIMP MetadbHandleList::Add(IMetadbHandle* handle)
 {
-	metadb_handle* ptr = nullptr;
-	GET_PTR(handle, ptr);
+	metadb_handle* handle_ptr = nullptr;
+	RETURN_IF_FAILED(handle->get(arg_helper(&handle_ptr)));
 
-	m_handles.add_item(ptr);
+	m_handles.add_item(handle_ptr);
 	return S_OK;
 }
 
 STDMETHODIMP MetadbHandleList::AddRange(IMetadbHandleList* handles)
 {
 	metadb_handle_list* handles_ptr = nullptr;
-	GET_PTR(handles, handles_ptr);
+	RETURN_IF_FAILED(handles->get(arg_helper(&handles_ptr)));
 
 	m_handles.add_items(*handles_ptr);
 	return S_OK;
@@ -59,11 +59,11 @@ STDMETHODIMP MetadbHandleList::BSearch(IMetadbHandle* handle, int* out)
 {
 	if (!out) return E_POINTER;
 
-	metadb_handle* ptr = nullptr;
-	GET_PTR(handle, ptr);
+	metadb_handle* handle_ptr = nullptr;
+	RETURN_IF_FAILED(handle->get(arg_helper(&handle_ptr)));
 
 	m_handles.sort_by_pointer_remove_duplicates();
-	*out = to_int(m_handles.bsearch_by_pointer(ptr));
+	*out = to_int(m_handles.bsearch_by_pointer(handle_ptr));
 	return S_OK;
 }
 
@@ -112,10 +112,10 @@ STDMETHODIMP MetadbHandleList::Find(IMetadbHandle* handle, int* out)
 {
 	if (!out) return E_POINTER;
 
-	metadb_handle* ptr = nullptr;
-	GET_PTR(handle, ptr);
+	metadb_handle* handle_ptr = nullptr;
+	RETURN_IF_FAILED(handle->get(arg_helper(&handle_ptr)));
 
-	*out = to_int(m_handles.find_item(ptr));
+	*out = to_int(m_handles.find_item(handle_ptr));
 	return S_OK;
 }
 
@@ -163,17 +163,17 @@ STDMETHODIMP MetadbHandleList::GetOtherInfo(BSTR* out)
 
 STDMETHODIMP MetadbHandleList::Insert(UINT index, IMetadbHandle* handle)
 {
-	metadb_handle* ptr = nullptr;
-	GET_PTR(handle, ptr);
+	metadb_handle* handle_ptr = nullptr;
+	RETURN_IF_FAILED(handle->get(arg_helper(&handle_ptr)));
 
-	m_handles.insert_item(ptr, index);
+	m_handles.insert_item(handle_ptr, index);
 	return S_OK;
 }
 
 STDMETHODIMP MetadbHandleList::InsertRange(UINT index, IMetadbHandleList* handles)
 {
 	metadb_handle_list* handles_ptr = nullptr;
-	GET_PTR(handles, handles_ptr);
+	RETURN_IF_FAILED(handles->get(arg_helper(&handles_ptr)));
 
 	m_handles.insert_items(*handles_ptr, index);
 	return S_OK;
@@ -182,7 +182,7 @@ STDMETHODIMP MetadbHandleList::InsertRange(UINT index, IMetadbHandleList* handle
 STDMETHODIMP MetadbHandleList::MakeDifference(IMetadbHandleList* handles)
 {
 	metadb_handle_list* handles_ptr = nullptr;
-	GET_PTR(handles, handles_ptr);
+	RETURN_IF_FAILED(handles->get(arg_helper(&handles_ptr)));
 
 	metadb_handle_list two(*handles_ptr);
 	m_handles.sort_by_pointer_remove_duplicates();
@@ -197,7 +197,7 @@ STDMETHODIMP MetadbHandleList::MakeDifference(IMetadbHandleList* handles)
 STDMETHODIMP MetadbHandleList::MakeIntersection(IMetadbHandleList* handles)
 {
 	metadb_handle_list* handles_ptr = nullptr;
-	GET_PTR(handles, handles_ptr);
+	RETURN_IF_FAILED(handles->get(arg_helper(&handles_ptr)));
 
 	metadb_handle_list two(*handles_ptr);
 	m_handles.sort_by_pointer_remove_duplicates();
@@ -239,7 +239,7 @@ STDMETHODIMP MetadbHandleList::OptimiseFileLayout(VARIANT_BOOL minimise)
 STDMETHODIMP MetadbHandleList::OrderByFormat(ITitleFormat* script, int direction)
 {
 	titleformat_object* obj = nullptr;
-	GET_PTR(script, obj);
+	RETURN_IF_FAILED(script->get(arg_helper(&obj)));
 
 	m_handles.sort_by_format(obj, nullptr, direction);
 	return S_OK;
@@ -295,10 +295,10 @@ STDMETHODIMP MetadbHandleList::RefreshStats()
 
 STDMETHODIMP MetadbHandleList::Remove(IMetadbHandle* handle)
 {
-	metadb_handle* ptr = nullptr;
-	GET_PTR(handle, ptr);
+	metadb_handle* handle_ptr = nullptr;
+	RETURN_IF_FAILED(handle->get(arg_helper(&handle_ptr)));
 
-	m_handles.remove_item(ptr);
+	m_handles.remove_item(handle_ptr);
 	return S_OK;
 }
 
@@ -356,7 +356,7 @@ STDMETHODIMP MetadbHandleList::RemoveDuplicates()
 STDMETHODIMP MetadbHandleList::RemoveDuplicatesByFormat(ITitleFormat* script)
 {
 	titleformat_object* obj = nullptr;
-	GET_PTR(script, obj);
+	RETURN_IF_FAILED(script->get(arg_helper(&obj)));
 
 	std::set<string8> set;
 	const uint32_t count = m_handles.get_count();
@@ -477,10 +477,10 @@ STDMETHODIMP MetadbHandleList::put_Item(UINT index, IMetadbHandle* handle)
 {
 	if (index >= m_handles.get_count()) return E_INVALIDARG;
 
-	metadb_handle* ptr = nullptr;
-	GET_PTR(handle, ptr);
+	metadb_handle* handle_ptr = nullptr;
+	RETURN_IF_FAILED(handle->get(arg_helper(&handle_ptr)));
 
-	m_handles.replace_item(index, ptr);
+	m_handles.replace_item(index, handle_ptr);
 	return S_OK;
 }
 

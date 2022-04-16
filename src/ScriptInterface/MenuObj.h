@@ -6,6 +6,7 @@ public:
 	MenuObj(CWindow wnd_parent);
 
 	STDMETHODIMP get__HMENU(HMENU* out) override;
+
 	STDMETHODIMP AppendMenuItem(UINT flags, UINT item_id, BSTR text) override;
 	STDMETHODIMP AppendMenuSeparator() override;
 	STDMETHODIMP AppendTo(IMenuObj* obj, UINT flags, BSTR text) override;

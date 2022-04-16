@@ -20,7 +20,7 @@ STDMETHODIMP SelectionHolder::SetSelection(IMetadbHandleList* handles, UINT type
 	if (type >= guids::selections.size()) return E_INVALIDARG;
 
 	metadb_handle_list* handles_ptr = nullptr;
-	GET_PTR(handles, handles_ptr);
+	RETURN_IF_FAILED(handles->get(arg_helper(&handles_ptr)));
 
 	m_holder->set_selection_ex(*handles_ptr, *guids::selections[type]);
 	return S_OK;

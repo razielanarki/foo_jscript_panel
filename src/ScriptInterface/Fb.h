@@ -50,6 +50,7 @@ public:
 	STDMETHODIMP VolumeDown() override;
 	STDMETHODIMP VolumeMute() override;
 	STDMETHODIMP VolumeUp() override;
+
 	STDMETHODIMP get_AlwaysOnTop(VARIANT_BOOL* out) override;
 	STDMETHODIMP get_ComponentPath(BSTR* out) override;
 	STDMETHODIMP get_CursorFollowPlayback(VARIANT_BOOL* out) override;
@@ -63,6 +64,7 @@ public:
 	STDMETHODIMP get_ReplaygainMode(UINT* out) override;
 	STDMETHODIMP get_StopAfterCurrent(VARIANT_BOOL* out) override;
 	STDMETHODIMP get_Volume(float* out) override;
+
 	STDMETHODIMP put_AlwaysOnTop(VARIANT_BOOL b) override;
 	STDMETHODIMP put_CursorFollowPlayback(VARIANT_BOOL b) override;
 	STDMETHODIMP put_PlaybackFollowCursor(VARIANT_BOOL b) override;

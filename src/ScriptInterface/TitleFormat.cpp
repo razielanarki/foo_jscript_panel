@@ -7,9 +7,9 @@ TitleFormat::TitleFormat(const std::wstring& pattern)
 	titleformat_compiler::get()->compile_safe(m_obj, upattern);
 }
 
-STDMETHODIMP TitleFormat::get__ptr(void** out)
+STDMETHODIMP TitleFormat::get(void** out)
 {
-	if (!out) return E_POINTER;
+	if (m_obj.is_empty() || !out) return E_POINTER;
 
 	*out = m_obj.get_ptr();
 	return S_OK;
@@ -39,11 +39,11 @@ STDMETHODIMP TitleFormat::EvalWithMetadb(IMetadbHandle* handle, BSTR* out)
 {
 	if (m_obj.is_empty() || !out) return E_POINTER;
 
-	metadb_handle* ptr = nullptr;
-	GET_PTR(handle, ptr);
+	metadb_handle* handle_ptr = nullptr;
+	RETURN_IF_FAILED(handle->get(arg_helper(&handle_ptr)));
 
 	string8 str;
-	ptr->format_title(nullptr, str, m_obj, nullptr);
+	handle_ptr->format_title(nullptr, str, m_obj, nullptr);
 	*out = to_bstr(str);
 	return S_OK;
 }
@@ -53,7 +53,7 @@ STDMETHODIMP TitleFormat::EvalWithMetadbs(IMetadbHandleList* handles, VARIANT* o
 	if (m_obj.is_empty() || !out) return E_POINTER;
 
 	metadb_handle_list* handles_ptr = nullptr;
-	GET_PTR(handles, handles_ptr);
+	RETURN_IF_FAILED(handles->get(arg_helper(&handles_ptr)));
 
 	ComArrayWriter writer(handles_ptr->get_count());
 

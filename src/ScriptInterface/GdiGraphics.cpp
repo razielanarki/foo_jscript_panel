@@ -2,8 +2,10 @@
 #include "GdiGraphics.h"
 #include "EstimateLineWrap.h"
 
-STDMETHODIMP GdiGraphics::get__ptr(void** out)
+STDMETHODIMP GdiGraphics::get(void** out)
 {
+	if (!m_graphics || !out) return E_POINTER;
+
 	*out = m_graphics;
 	return S_OK;
 }
@@ -64,7 +66,7 @@ STDMETHODIMP GdiGraphics::DrawImage(IGdiBitmap* image, float dstX, float dstY, f
 	if (!m_graphics) return E_POINTER;
 
 	Gdiplus::Bitmap* bitmap = nullptr;
-	GET_PTR(image, bitmap);
+	RETURN_IF_FAILED(image->get(arg_helper(&bitmap)));
 
 	const Gdiplus::RectF rect(dstX, dstY, dstW, dstH);
 	Gdiplus::ImageAttributes ia;
@@ -144,7 +146,7 @@ STDMETHODIMP GdiGraphics::DrawString(BSTR str, IGdiFont* font, __int64 colour, f
 	if (!m_graphics) return E_POINTER;
 
 	Gdiplus::Font* fn = nullptr;
-	GET_PTR(font, fn);
+	RETURN_IF_FAILED(font->get(arg_helper(&fn)));
 
 	Gdiplus::StringFormat fmt(Gdiplus::StringFormat::GenericTypographic());
 

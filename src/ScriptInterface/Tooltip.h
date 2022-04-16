@@ -11,7 +11,9 @@ public:
 	STDMETHODIMP SetDelayTime(int type, int time) override;
 	STDMETHODIMP SetMaxWidth(int width) override;
 	STDMETHODIMP TrackPosition(int x, int y) override;
+
 	STDMETHODIMP get_Text(BSTR* out) override;
+
 	STDMETHODIMP put_Text(BSTR text) override;
 	STDMETHODIMP put_TrackActivate(VARIANT_BOOL activate) override;
 

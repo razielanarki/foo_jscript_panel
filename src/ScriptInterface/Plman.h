@@ -59,11 +59,13 @@ public:
 	STDMETHODIMP SortByFormatV2(UINT playlistIndex, BSTR pattern, int direction, VARIANT_BOOL* out) override;
 	STDMETHODIMP SortPlaylistsByName(int direction) override;
 	STDMETHODIMP UndoBackup(UINT playlistIndex) override;
+
 	STDMETHODIMP get_ActivePlaylist(int* out) override;
 	STDMETHODIMP get_PlaybackOrder(UINT* out) override;
 	STDMETHODIMP get_PlayingPlaylist(int* out) override;
 	STDMETHODIMP get_PlaylistCount(UINT* out) override;
 	STDMETHODIMP get_RecyclerCount(UINT* out) override;
+
 	STDMETHODIMP put_ActivePlaylist(UINT playlistIndex) override;
 	STDMETHODIMP put_PlaybackOrder(UINT order) override;
 

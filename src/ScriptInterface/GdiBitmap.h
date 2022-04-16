@@ -5,7 +5,8 @@ class GdiBitmap : public JSDisposableImpl<IGdiBitmap>
 public:
 	GdiBitmap(UniqueBitmap bitmap);
 
-	STDMETHODIMP get__ptr(void** out) override;
+	STDMETHODIMP get(void** out) override;
+
 	STDMETHODIMP ApplyAlpha(UINT8 alpha, IGdiBitmap** out) override;
 	STDMETHODIMP ApplyMask(IGdiBitmap* image, VARIANT_BOOL* out) override;
 	STDMETHODIMP Clone(float x, float y, float w, float h, IGdiBitmap** out) override;
@@ -17,6 +18,7 @@ public:
 	STDMETHODIMP RotateFlip(UINT mode) override;
 	STDMETHODIMP SaveAs(BSTR path, BSTR format, VARIANT_BOOL* out) override;
 	STDMETHODIMP StackBlur(UINT8 radius) override;
+
 	STDMETHODIMP get_Height(UINT* out) override;
 	STDMETHODIMP get_Width(UINT* out) override;
 

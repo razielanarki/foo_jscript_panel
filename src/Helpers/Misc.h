@@ -11,6 +11,7 @@ static uint32_t to_uint(NotEnum auto num) { return static_cast<uint32_t>(num); }
 static COLORREF to_colorref(auto argb) { return Gdiplus::Color(to_uint(argb)).ToCOLORREF(); }
 static HWND to_hwnd(uint32_t window_id) { return reinterpret_cast<HWND>(window_id); }
 static VARIANT_BOOL to_variant_bool(auto b) { return b ? VARIANT_TRUE : VARIANT_FALSE; }
+static void** arg_helper(auto arg) { return reinterpret_cast<void**>(arg); }
 
 static int to_argb(COLORREF colour)
 {

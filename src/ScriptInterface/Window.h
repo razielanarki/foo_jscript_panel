@@ -28,6 +28,7 @@ public:
 	STDMETHODIMP SetTooltipFont(BSTR name, int pxSize, int style) override;
 	STDMETHODIMP ShowConfigure() override;
 	STDMETHODIMP ShowProperties() override;
+
 	STDMETHODIMP get_Height(int* out) override;
 	STDMETHODIMP get_ID(UINT* out) override;
 	STDMETHODIMP get_InstanceType(UINT* out) override;
@@ -39,6 +40,7 @@ public:
 	STDMETHODIMP get_MinWidth(UINT* out) override;
 	STDMETHODIMP get_Name(BSTR* out) override;
 	STDMETHODIMP get_Width(int* out) override;
+
 	STDMETHODIMP put_MaxHeight(UINT height) override;
 	STDMETHODIMP put_MaxWidth(UINT width) override;
 	STDMETHODIMP put_MinHeight(UINT height) override;

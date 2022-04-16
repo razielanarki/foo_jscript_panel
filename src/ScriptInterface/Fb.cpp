@@ -67,7 +67,7 @@ STDMETHODIMP Fb::CopyHandleListToClipboard(IMetadbHandleList* handles, VARIANT_B
 	if (!out) return E_POINTER;
 
 	metadb_handle_list* handles_ptr = nullptr;
-	GET_PTR(handles, handles_ptr);
+	RETURN_IF_FAILED(handles->get(arg_helper(&handles_ptr)));
 
 	auto obj = ole_interaction::get()->create_dataobject(*handles_ptr);
 	*out = to_variant_bool(SUCCEEDED(OleSetClipboard(obj.get_ptr())));
@@ -91,9 +91,9 @@ STDMETHODIMP Fb::CreateHandleList(VARIANT handle, IMetadbHandleList** out)
 
 	if (handle.vt == VT_DISPATCH && handle.pdispVal && SUCCEEDED(handle.pdispVal->QueryInterface(__uuidof(IMetadbHandle), reinterpret_cast<void**>(&temp))))
 	{
-		metadb_handle* ptr;
-		GET_PTR(temp, ptr);
-		items.add_item(ptr);
+		metadb_handle* handle_ptr = nullptr;
+		RETURN_IF_FAILED(temp->get(arg_helper(&handle_ptr)));
+		items.add_item(handle_ptr);
 	}
 	*out = new ComObjectImpl<MetadbHandleList>(items);
 	return S_OK;
@@ -120,7 +120,7 @@ STDMETHODIMP Fb::DoDragDrop(IMetadbHandleList* handles, UINT okEffects, UINT* ou
 	if (!out) return E_POINTER;
 
 	metadb_handle_list* handles_ptr = nullptr;
-	GET_PTR(handles, handles_ptr);
+	RETURN_IF_FAILED(handles->get(arg_helper(&handles_ptr)));
 
 	*out = DROPEFFECT_NONE;
 
@@ -250,7 +250,7 @@ STDMETHODIMP Fb::GetQueryItems(IMetadbHandleList* handles, BSTR query, IMetadbHa
 	if (!out) return E_POINTER;
 
 	metadb_handle_list* handles_ptr = nullptr;
-	GET_PTR(handles, handles_ptr);
+	RETURN_IF_FAILED(handles->get(arg_helper(&handles_ptr)));
 
 	const string8 uquery = from_wide(query);
 	search_filter_v2::ptr filter;
@@ -314,10 +314,10 @@ STDMETHODIMP Fb::IsMetadbInMediaLibrary(IMetadbHandle* handle, VARIANT_BOOL* out
 {
 	if (!out) return E_POINTER;
 
-	metadb_handle* ptr = nullptr;
-	GET_PTR(handle, ptr);
+	metadb_handle* handle_ptr = nullptr;
+	RETURN_IF_FAILED(handle->get(arg_helper(&handle_ptr)));
 
-	*out = to_variant_bool(library_manager::get()->is_item_in_library(ptr));
+	*out = to_variant_bool(library_manager::get()->is_item_in_library(handle_ptr));
 	return S_OK;
 }
 
@@ -382,14 +382,14 @@ STDMETHODIMP Fb::RunContextCommandWithMetadb(BSTR command, VARIANT handle_or_han
 
 	if (SUCCEEDED(handle_or_handles.pdispVal->QueryInterface(__uuidof(IMetadbHandle), reinterpret_cast<void**>(&temp1))))
 	{
-		metadb_handle* ptr = nullptr;
-		GET_PTR(temp1, ptr);
-		items.add_item(ptr);
+		metadb_handle* handle_ptr = nullptr;
+		RETURN_IF_FAILED(temp1->get(arg_helper(&handle_ptr)));
+		items.add_item(handle_ptr);
 	}
 	else if (SUCCEEDED(handle_or_handles.pdispVal->QueryInterface(__uuidof(IMetadbHandleList), reinterpret_cast<void**>(&temp2))))
 	{
 		metadb_handle_list* handles_ptr = nullptr;
-		GET_PTR(temp2, handles_ptr);
+		RETURN_IF_FAILED(temp2->get(arg_helper(&handles_ptr)));
 		items = *handles_ptr;
 	}
 

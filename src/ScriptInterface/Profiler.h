@@ -8,6 +8,7 @@ public:
 
 	STDMETHODIMP Print() override;
 	STDMETHODIMP Reset() override;
+
 	STDMETHODIMP get_Time(__int64* out) override;
 
 private:

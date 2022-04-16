@@ -3,8 +3,9 @@
 class GdiGraphics : public JSDispatchImpl<IGdiGraphics>
 {
 public:
-	STDMETHODIMP get__ptr(void** out) override;
+	STDMETHODIMP get(void** out) override;
 	STDMETHODIMP put__ptr(void* g) override;
+
 	STDMETHODIMP CalcTextHeight(BSTR str, IGdiFont* font, UINT* out) override;
 	STDMETHODIMP CalcTextWidth(BSTR str, IGdiFont* font, UINT* out) override;
 	STDMETHODIMP DrawEllipse(float x, float y, float w, float h, float line_width, __int64 colour) override;
