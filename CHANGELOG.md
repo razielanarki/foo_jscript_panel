@@ -1,3 +1,7 @@
+## v2.8.6
+- Font handling fixes.
+- Various `JS Smooth Browser` fixes.
+
 ## v2.8.5.1
 - Fix a `JS Smooth Playlist` script error when the `Delete` key was used to the remove the last item(s) in a playlist.
 
