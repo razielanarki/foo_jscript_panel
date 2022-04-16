@@ -118,7 +118,6 @@ void CDialogConfigure::BuildMenu()
 	const std::wstring component_folder = Component::get_path();
 	PopulateMenu(basic, m_basic, component_folder + L"samples\\basic", ID_BASIC_BEGIN);
 	PopulateMenu(samples, m_samples, component_folder + L"samples", ID_SAMPLES_BEGIN);
-	PopulateMenu(test, m_test, L"E:\\Junk\\foobar2000\\test", ID_TEST_BEGIN);
 	PopulateMenu(docs, m_docs, component_folder + L"docs", ID_DOCS_BEGIN);
 	PopulateMenu(licenses, m_licenses, component_folder + L"licenses", ID_LICENSES_BEGIN);
 
@@ -126,7 +125,6 @@ void CDialogConfigure::BuildMenu()
 	AppendMenuW(menu.get(), MF_STRING | MF_POPUP, reinterpret_cast<UINT_PTR>(file.get()), L"File");
 	InsertMenuW(samples.get(), ID_SAMPLES_BEGIN, MF_STRING | MF_POPUP, reinterpret_cast<UINT_PTR>(basic.get()), L"basic");
 	AppendMenuW(menu.get(), MF_STRING | MF_POPUP, reinterpret_cast<UINT_PTR>(samples.get()), L"Samples");
-	if (m_test.size() > 0) AppendMenuW(menu.get(), MF_STRING | MF_POPUP, reinterpret_cast<UINT_PTR>(test.get()), L"Test");
 	AppendMenuW(menu.get(), MF_STRING | MF_POPUP, reinterpret_cast<UINT_PTR>(docs.get()), L"Docs");
 	AppendMenuW(menu.get(), MF_STRING | MF_POPUP, reinterpret_cast<UINT_PTR>(licenses.get()), L"Licenses");
 	AppendMenuW(menu.get(), MF_STRING | MF_POPUP, reinterpret_cast<UINT_PTR>(github.get()), L"GitHub");
@@ -200,11 +198,6 @@ void CDialogConfigure::OnMenuLicenses(UINT, int nID, CWindow)
 void CDialogConfigure::OnMenuSamples(UINT, int nID, CWindow)
 {
 	m_editorctrl.SetContent(FileHelper(m_samples[nID - ID_SAMPLES_BEGIN]).read());
-}
-
-void CDialogConfigure::OnMenuTest(UINT, int nID, CWindow)
-{
-	m_editorctrl.SetContent(FileHelper(m_test[nID - ID_TEST_BEGIN]).read());
 }
 
 void CDialogConfigure::OnReset(UINT, int, CWindow)

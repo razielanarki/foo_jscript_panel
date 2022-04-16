@@ -85,9 +85,6 @@
 #define ID_BASIC_BEGIN                  400
 #define ID_BASIC_END                    499
 
-#define ID_TEST_BEGIN                   500
-#define ID_TEST_END                     599
-
 #define ID_DOCS_BEGIN                   600
 #define ID_DOCS_END                     699
 

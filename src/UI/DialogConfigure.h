@@ -15,7 +15,6 @@ public:
 		COMMAND_RANGE_HANDLER_EX(ID_FILE_IMPORT, ID_FILE_EXPORT, OnMenuFile)
 		COMMAND_RANGE_HANDLER_EX(ID_SAMPLES_BEGIN, ID_SAMPLES_END, OnMenuSamples)
 		COMMAND_RANGE_HANDLER_EX(ID_BASIC_BEGIN, ID_BASIC_END, OnMenuBasic)
-		COMMAND_RANGE_HANDLER_EX(ID_TEST_BEGIN, ID_TEST_END, OnMenuTest)
 		COMMAND_RANGE_HANDLER_EX(ID_DOCS_BEGIN, ID_DOCS_END, OnMenuDocs)
 		COMMAND_RANGE_HANDLER_EX(ID_LICENSES_BEGIN, ID_LICENSES_END, OnMenuLicenses)
 		COMMAND_RANGE_HANDLER_EX(ID_GITHUB_CODE, ID_GITHUB_WIKI, OnMenuGitHub)
@@ -39,7 +38,6 @@ public:
 	void OnMenuGitHub(UINT, int nID, CWindow);
 	void OnMenuLicenses(UINT, int nID, CWindow);
 	void OnMenuSamples(UINT, int nID, CWindow);
-	void OnMenuTest(UINT, int nID, CWindow);
 	void OnReset(UINT, int, CWindow);
 
 private:
@@ -48,6 +46,6 @@ private:
 	CDialogResizeHelper m_resizer;
 	CEditorCtrl m_editorctrl;
 	PanelWindow* m_panel;
-	WStrings m_basic, m_docs, m_licenses, m_samples, m_test;
+	WStrings m_basic, m_docs, m_licenses, m_samples;
 	string8 m_caption;
 };
