@@ -1,3 +1,6 @@
+## v2.8.6.1
+- Fix `JS Smooth Browser` bug where images were incorrectly fetched when in the text-only column mode.
+
 ## v2.8.6
 - Font handling fixes.
 - Various `JS Smooth Browser` fixes.
