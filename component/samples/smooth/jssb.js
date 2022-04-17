@@ -326,10 +326,11 @@ function oBrowser() {
 			var normal_text = g_color_normal_txt;
 			var fader_txt = blendColors(g_color_normal_txt, g_color_normal_bg, 0.25);
 
-			if (!group.cover_image && !group.image_requested && group.metadb) {
+			if (ppt.panelMode != 0 && !group.cover_image && !group.image_requested && group.metadb) {
 				group.image_requested = true;
-				var filename = generate_filename(group.cachekey, AlbumArtId.front);
-				group.cover_image = get_art(group.metadb, filename, ppt.tagMode == 0 ? AlbumArtId.front : AlbumArtId.artist);
+				var id = ppt.tagMode == 0 ? AlbumArtId.front : AlbumArtId.artist
+				var filename = generate_filename(group.cachekey, id);
+				group.cover_image = get_art(group.metadb, filename, id);
 			}
 
 			switch (ppt.panelMode) {
