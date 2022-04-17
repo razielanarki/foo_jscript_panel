@@ -356,8 +356,10 @@ function oBrowser() {
 				if (ppt.panelMode == 1) {
 					var cover_size = ah - (text_left * 2);
 					if (ppt.showAllItem && i == 0 && this.groups.length > 1) {
+						gr.FillSolidRect(ax + text_left, ay + text_left, cover_size, cover_size, g_color_normal_bg);
 						drawImage(gr, images.all, ax + text_left, ay + text_left, cover_size, cover_size, ppt.autoFill, normal_text & 0x25ffffff);
 					} else {
+						if (!group.cover_image) gr.FillSolidRect(ax + text_left, ay + text_left, cover_size, cover_size, g_color_normal_bg);
 						drawImage(gr, group.cover_image || images.noart, ax + text_left, ay + text_left, cover_size, cover_size, ppt.autoFill, normal_text & 0x25ffffff);
 					}
 					text_left += cover_size + 8;
