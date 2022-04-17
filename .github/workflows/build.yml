@@ -27,7 +27,7 @@ jobs:
       run: msbuild /m '/p:Platform=Win32;Configuration=${{ matrix.configuration }}' src\${{ env.REPO }}.sln
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       if: startsWith(github.ref, 'refs/tags')
       with:
         name: ${{ env.REPO }}-${{ matrix.configuration }}
