@@ -87,7 +87,6 @@ function oBrowser() {
 		}
 		this.setList();
 		this.showFocusedItem();
-		this.gettags(true);
 		this.repaint();
 	}
 
@@ -274,7 +273,6 @@ function oBrowser() {
 		g_focus_row = this.getOffsetFocusItem(g_focus_id);
 
 		this.update_playlist_info();
-		this.gettags(true);
 		this.scrollbar.updateScrollbar();
 		this.repaint();
 	}
@@ -319,37 +317,9 @@ function oBrowser() {
 		return tags;
 	}
 
-	this.gettags = function (all) {
-		if (this.rows.length == 0) return;
-		var start_prev = g_start_;
-		var end_prev = g_end_;
+	this.draw = function (gr) {
 		this.getlimits();
 
-		if (all || Math.abs(g_start_ - start_prev) > 1 || Math.abs(g_end_ - end_prev) > 1) {
-			for (var i = g_start_; i <= g_end_; i++) {
-				switch (this.rows[i].type) {
-				case ppt.groupHeaderRowsNumber: // last group header row
-					this.rows[i].groupkey = ppt.tf_groupkey.EvalWithMetadb(this.rows[i].metadb);
-					this.rows[i].tags = this.get_track_tags(i);
-					break;
-				case 0: // track row
-					this.rows[i].groupkey = ppt.tf_groupkey.EvalWithMetadb(this.rows[i].metadb);
-					this.rows[i].tags = this.get_track_tags(i);
-					break;
-				}
-			}
-		} else {
-			var index = -1
-			if (g_start_ < start_prev) index = g_start_;
-			else if (g_start_ > start_prev || g_end_ > end_prev) index = g_end_;
-
-			if (index > -1 && (this.rows[index].type == ppt.groupHeaderRowsNumber || this.rows[index].type == 0)) {
-				this.rows[index].tags = this.get_track_tags(index);
-			}
-		}
-	}
-
-	this.draw = function (gr) {
 		if (this.rows.length > 0) {
 			var ax = 0;
 			var ay = 0;
@@ -420,6 +390,10 @@ function oBrowser() {
 						if (this.rows[i].playlistTrackId == g_focus_id) {
 							gr.DrawRect(ax + 1, ay + 1, aw - 2, ah - 2, 2.0, g_color_selected_bg);
 						}
+					}
+
+					if (!this.rows[i].tags) {
+						this.rows[i].tags = this.get_track_tags(i);
 					}
 
 					var tags = this.rows[i].tags;
@@ -622,7 +596,6 @@ function oBrowser() {
 					this.groups[this.rows[this.activeRow].albumId].collapsed = !this.groups[this.rows[this.activeRow].albumId].collapsed;
 					this.setList();
 					this.showFocusedItem();
-					this.gettags(true);
 					this.repaint();
 					break;
 				case rowType == 0: // track
@@ -699,8 +672,6 @@ function oBrowser() {
 			}
 		}
 		if (need_repaint) {
-			if (isScrolling)
-				brw.gettags(false);
 			need_repaint = false;
 			window.Repaint();
 		}
@@ -1158,7 +1129,6 @@ function get_metrics() {
 	if (brw) {
 		brw.setSize();
 		brw.setList();
-		brw.gettags(true);
 	}
 }
 
@@ -1638,7 +1608,6 @@ function on_item_focus_change(playlist, from, to) {
 				}
 				brw.setList();
 				brw.scrollbar.updateScrollbar();
-				brw.gettags(true);
 			}
 		}
 
@@ -1687,7 +1656,7 @@ function check_scroll(scroll___) {
 	if (scroll___ != 0 && scroll___ > end_limit) {
 		scroll___ = end_limit;
 	}
-	return scroll___;
+	return isNaN(scroll___) ? 0 : scroll___;
 }
 
 function getFocusId() {
