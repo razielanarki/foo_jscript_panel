@@ -45,6 +45,9 @@ namespace
 
 			switch (msg)
 			{
+			case WM_SETCURSOR:
+				lres = 1;
+				return TRUE;
 			case WM_CONTEXTMENU:
 				lres = 1;
 				if (m_callback->is_edit_mode_enabled()) return FALSE;

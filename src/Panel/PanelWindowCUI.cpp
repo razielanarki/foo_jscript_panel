@@ -36,6 +36,8 @@ namespace
 				fb2k::std_api_get<cui::colours::manager>()->deregister_common_callback(this);
 				fb2k::std_api_get<cui::fonts::manager>()->deregister_common_callback(this);
 				break;
+			case WM_SETCURSOR:
+				return 1;
 			case WM_ERASEBKGND:
 				if (is_transparent()) m_hwnd.PostMessageW(uwm::refreshbk);
 				return 1;
