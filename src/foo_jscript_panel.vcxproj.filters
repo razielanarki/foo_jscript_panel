@@ -133,11 +133,11 @@
     <ClInclude Include="Panel\PanelWindow.h">
       <Filter>Panel</Filter>
     </ClInclude>
-    <ClInclude Include="ScriptHost\ScriptHost.h">
-      <Filter>ScriptHost</Filter>
+    <ClInclude Include="Panel\ScriptHost.h">
+      <Filter>Panel</Filter>
     </ClInclude>
-    <ClInclude Include="ScriptHost\ScriptInfo.h">
-      <Filter>ScriptHost</Filter>
+    <ClInclude Include="Panel\ScriptInfo.h">
+      <Filter>Panel</Filter>
     </ClInclude>
     <ClInclude Include="ScriptInterface\ComArrayReader.h">
       <Filter>ScriptInterface</Filter>
@@ -290,11 +290,11 @@
     <ClCompile Include="Panel\PanelWindowDUI.cpp">
       <Filter>Panel</Filter>
     </ClCompile>
-    <ClCompile Include="ScriptHost\ScriptHost.cpp">
-      <Filter>ScriptHost</Filter>
+    <ClCompile Include="Panel\ScriptHost.cpp">
+      <Filter>Panel</Filter>
     </ClCompile>
-    <ClCompile Include="ScriptHost\ScriptInfo.cpp">
-      <Filter>ScriptHost</Filter>
+    <ClCompile Include="Panel\ScriptInfo.cpp">
+      <Filter>Panel</Filter>
     </ClCompile>
     <ClCompile Include="ScriptInterface\Console.cpp">
       <Filter>ScriptInterface</Filter>
