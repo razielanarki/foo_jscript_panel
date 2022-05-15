@@ -326,7 +326,7 @@ STDMETHODIMP Plman::IsAutoPlaylist(UINT playlistIndex, VARIANT_BOOL* out)
 STDMETHODIMP Plman::IsPlaylistItemSelected(UINT playlistIndex, UINT playlistItemIndex, VARIANT_BOOL* out)
 {
 	if (!out) return E_POINTER;
-	RETURN_IF_FAILED(check_playlist_item(playlistIndex, playlistItemIndex));
+	//RETURN_IF_FAILED(check_playlist_item(playlistIndex, playlistItemIndex));
 
 	*out = to_variant_bool(theAPI()->playlist_is_item_selected(playlistIndex, playlistItemIndex));
 	return S_OK;

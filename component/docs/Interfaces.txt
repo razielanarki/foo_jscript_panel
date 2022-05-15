@@ -959,7 +959,6 @@ interface IPlman {
 		// playlistIndex must be valid.
 
 		plman.IsPlaylistItemSelected(playlistIndex, playlistItemIndex) (boolean)
-		// playlistIndex and playlistItemIndex must be valid.
 
 		plman.IsPlaylistLocked(playlistIndex) (boolean)
 		/*
