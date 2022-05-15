@@ -19,6 +19,7 @@ const typeAliases = {
 	'string': 'const char*',
 	'stringresult': 'char*',
 	'textrange': 'void*',
+	'textrangefull': 'void*',
 }
 
 const basicTypes = [
