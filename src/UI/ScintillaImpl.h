@@ -98,7 +98,9 @@ public:
 	Position EncodedFromUTF8(const char* utf8, char* encoded) { return CallPointer(Message::EncodedFromUTF8, reinterpret_cast<uintptr_t>(utf8), encoded); }
 	Position FindColumn(Line line, Position column) { return Call(Message::FindColumn, line, column); }
 	Position FindText(FindOption searchFlags, void* ft) { return CallPointer(Message::FindText, static_cast<uintptr_t>(searchFlags), ft); }
+	Position FindTextFull(FindOption searchFlags, void* ft) { return CallPointer(Message::FindTextFull, static_cast<uintptr_t>(searchFlags), ft); }
 	Position FormatRange(bool draw, void* fr) { return CallPointer(Message::FormatRange, draw, fr); }
+	Position FormatRangeFull(bool draw, void* fr) { return CallPointer(Message::FormatRangeFull, draw, fr); }
 	Position GetAnchor() { return Call(Message::GetAnchor); }
 	Position GetColumn(Position pos) { return Call(Message::GetColumn, pos); }
 	Position GetCurLine(Position length, char* text) { return CallPointer(Message::GetCurLine, length, text); }
@@ -138,6 +140,7 @@ public:
 	Position GetText(Position length, char* text) { return CallPointer(Message::GetText, length, text); }
 	Position GetTextLength() { return Call(Message::GetTextLength); }
 	Position GetTextRange(void* tr) { return CallPointer(Message::GetTextRange, 0, tr); }
+	Position GetTextRangeFull(void* tr) { return CallPointer(Message::GetTextRangeFull, 0, tr); }
 	Position IndexPositionFromLine(Line line, LineCharacterIndexType lineCharacterIndex) { return Call(Message::IndexPositionFromLine, line, static_cast<intptr_t>(lineCharacterIndex)); }
 	Position IndicatorEnd(int indicator, Position pos) { return Call(Message::IndicatorEnd, indicator, pos); }
 	Position IndicatorStart(int indicator, Position pos) { return Call(Message::IndicatorStart, indicator, pos); }
