@@ -25,8 +25,8 @@ jobs:
 
     - name: Apply Scintilla Patch
       run: |
-        cd scintilla-jsp/patches
-        git apply jsp.patch
+        cd scintilla-jsp
+        git apply patches/jsp.patch
 
     - name: Build
       run: msbuild /m '/p:Platform=Win32;Configuration=${{ matrix.configuration }}' src\${{ env.REPO }}.sln
