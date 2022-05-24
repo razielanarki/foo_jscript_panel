@@ -23,6 +23,9 @@ jobs:
         $repo = "${{ github.repository }}".Split("/")[1]
         echo "REPO=$repo" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
+    - name: Apply Scintilla Patch
+      run: git apply scintilla-jsp/patches/jsp.patch
+
     - name: Build
       run: msbuild /m '/p:Platform=Win32;Configuration=${{ matrix.configuration }}' src\${{ env.REPO }}.sln
 
