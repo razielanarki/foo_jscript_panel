@@ -1,3 +1,6 @@
+## v2.8.7
+- Minor bug fixes.
+
 ## v2.8.6.2
 - Fix `JS Smooth Playlist` not initialising properly if it was hidden on startup.
 
