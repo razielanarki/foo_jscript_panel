@@ -29,7 +29,7 @@ public:
 	void set_tooltip_font(const std::wstring& name, int pxSize, int style);
 	void show_configure_popup(HWND parent);
 	void show_property_popup(HWND parent);
-	void unload_script();
+	void unload_script(bool invoke_callback = true);
 	void update_script();
 
 	CPoint m_min, m_max;

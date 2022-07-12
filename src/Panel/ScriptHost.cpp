@@ -16,8 +16,8 @@ HRESULT ScriptHost::InitCallbackMap()
 	if (!m_script_root) return E_POINTER;
 	for (const auto& [id, name] : g_callback_name_map)
 	{
-		LPOLESTR cname = const_cast<LPOLESTR>(name.data());
-		DISPID dispId;
+		auto cname = const_cast<LPOLESTR>(name.data());
+		DISPID dispId{};
 		if (SUCCEEDED(m_script_root->GetIDsOfNames(IID_NULL, &cname, 1, LOCALE_USER_DEFAULT, &dispId)))
 		{
 			m_callback_map.emplace(id, dispId);
@@ -39,6 +39,39 @@ HRESULT ScriptHost::InitCallbackMap()
 			}
 		}
 	}
+	return S_OK;
+}
+
+HRESULT ScriptHost::Initialise()
+{
+	static constexpr CLSID jscript9clsid = { 0x16d51579, 0xa30b, 0x4c8b, { 0xa2, 0x76, 0x0f, 0xf4, 0xdc, 0x41, 0xe7, 0x55 } };
+	m_script_engine = wil::CoCreateInstanceNoThrow<IActiveScript>(jscript9clsid);
+
+	if (!m_script_engine)
+	{
+		FB2K_console_formatter() << Component::name_version << ": This component requires a system with IE9 or later.";
+		return E_FAIL;
+	}
+
+	wil::com_ptr_t<IActiveScriptProperty> script_property;
+	auto version = _variant_t(1L + SCRIPTLANGUAGEVERSION_5_8);
+
+	RETURN_IF_FAILED(m_script_engine->QueryInterface(&script_property));
+	RETURN_IF_FAILED(script_property->SetProperty(SCRIPTPROP_INVOKEVERSIONING, nullptr, &version));
+	RETURN_IF_FAILED(m_script_engine->SetScriptSite(this));
+	RETURN_IF_FAILED(m_script_engine->QueryInterface(&m_parser));
+	RETURN_IF_FAILED(m_parser->InitNew());
+	RETURN_IF_FAILED(m_script_engine->AddNamedItem(L"console", SCRIPTITEM_ISVISIBLE));
+	RETURN_IF_FAILED(m_script_engine->AddNamedItem(L"fb", SCRIPTITEM_ISVISIBLE));
+	RETURN_IF_FAILED(m_script_engine->AddNamedItem(L"gdi", SCRIPTITEM_ISVISIBLE));
+	RETURN_IF_FAILED(m_script_engine->AddNamedItem(L"plman", SCRIPTITEM_ISVISIBLE));
+	RETURN_IF_FAILED(m_script_engine->AddNamedItem(L"utils", SCRIPTITEM_ISVISIBLE));
+	RETURN_IF_FAILED(m_script_engine->AddNamedItem(L"window", SCRIPTITEM_ISVISIBLE));
+	RETURN_IF_FAILED(m_script_engine->SetScriptState(SCRIPTSTATE_CONNECTED));
+	RETURN_IF_FAILED(m_script_engine->GetScriptDispatch(nullptr, &m_script_root));
+	RETURN_IF_FAILED(ParseImports());
+	RETURN_IF_FAILED(ParseScript(m_panel->m_config.m_code, "<main>"));
+	RETURN_IF_FAILED(InitCallbackMap());
 	return S_OK;
 }
 
@@ -138,14 +171,12 @@ STDMETHODIMP ScriptHost::OnScriptError(IActiveScriptError* err)
 {
 	if (!err) return E_POINTER;
 
-	m_ok = false;
-
-	DWORD ctx = 0;
-	EXCEPINFO excep = { 0 };
-	LONG charpos = 0;
-	ULONG line = 0;
-	_bstr_t sourceline;
+	DWORD ctx{};
+	EXCEPINFO excep{};
+	LONG charpos{};
+	ULONG line{};
 	string8 error_text;
+	wil::unique_bstr sourceline;
 
 	error_text << m_info.m_build_string << CRLF;
 
@@ -184,9 +215,9 @@ STDMETHODIMP ScriptHost::OnScriptError(IActiveScriptError* err)
 		error_text << "Line: " << (line + 1) << ", Col: " << (charpos + 1) << CRLF;
 	}
 
-	if (SUCCEEDED(err->GetSourceLineText(sourceline.GetAddress())))
+	if (SUCCEEDED(err->GetSourceLineText(&sourceline)))
 	{
-		error_text << from_wide(sourceline.GetBSTR());
+		error_text << from_wide(sourceline.get());
 	}
 
 	FB2K_console_formatter() << error_text;
@@ -198,8 +229,8 @@ STDMETHODIMP ScriptHost::OnScriptError(IActiveScriptError* err)
 
 	MessageBeep(MB_ICONASTERISK);
 	if (m_script_engine) m_script_engine->SetScriptState(SCRIPTSTATE_DISCONNECTED);
+	m_panel->unload_script(false);
 	m_panel->repaint();
-	m_panel->unload_script();
 	return S_OK;
 }
 
@@ -208,49 +239,13 @@ STDMETHODIMP ScriptHost::OnScriptTerminate(const VARIANT*, const EXCEPINFO*)
 	return E_NOTIMPL;
 }
 
-STDMETHODIMP ScriptHost::OnStateChange(SCRIPTSTATE)
+STDMETHODIMP ScriptHost::OnStateChange(SCRIPTSTATE state)
 {
-	return E_NOTIMPL;
+	m_state = state;
+	return S_OK;
 }
 
-bool ScriptHost::Initialise()
-{
-	m_script_engine = wil::CoCreateInstanceNoThrow<IActiveScript>(guids::jscript9clsid);
-	if (!m_script_engine)
-	{
-		FB2K_console_formatter() << Component::name_version << ": This component requires a system with IE9 or later.";
-		return false;
-	}
-
-	const auto result = [this]()
-	{
-		wil::com_ptr_t<IActiveScriptProperty> script_property;
-		auto version = _variant_t(static_cast<long>(SCRIPTLANGUAGEVERSION_5_8 + 1));
-
-		RETURN_IF_FAILED(m_script_engine->QueryInterface(&script_property));
-		RETURN_IF_FAILED(script_property->SetProperty(SCRIPTPROP_INVOKEVERSIONING, nullptr, &version));
-		RETURN_IF_FAILED(m_script_engine->SetScriptSite(this));
-		RETURN_IF_FAILED(m_script_engine->QueryInterface(&m_parser));
-		RETURN_IF_FAILED(m_parser->InitNew());
-		RETURN_IF_FAILED(m_script_engine->AddNamedItem(L"console", SCRIPTITEM_ISVISIBLE));
-		RETURN_IF_FAILED(m_script_engine->AddNamedItem(L"fb", SCRIPTITEM_ISVISIBLE));
-		RETURN_IF_FAILED(m_script_engine->AddNamedItem(L"gdi", SCRIPTITEM_ISVISIBLE));
-		RETURN_IF_FAILED(m_script_engine->AddNamedItem(L"plman", SCRIPTITEM_ISVISIBLE));
-		RETURN_IF_FAILED(m_script_engine->AddNamedItem(L"utils", SCRIPTITEM_ISVISIBLE));
-		RETURN_IF_FAILED(m_script_engine->AddNamedItem(L"window", SCRIPTITEM_ISVISIBLE));
-		RETURN_IF_FAILED(m_script_engine->SetScriptState(SCRIPTSTATE_CONNECTED));
-		RETURN_IF_FAILED(m_script_engine->GetScriptDispatch(nullptr, &m_script_root));
-		RETURN_IF_FAILED(ParseImports());
-		RETURN_IF_FAILED(ParseScript(m_panel->m_config.m_code, "<main>"));
-		RETURN_IF_FAILED(InitCallbackMap());
-		return S_OK;
-	}();
-
-	m_ok = SUCCEEDED(result);
-	return m_ok;
-}
-
-bool ScriptHost::InvokeMouseCallback(UINT msg, WPARAM wp, LPARAM lp)
+bool ScriptHost::InvokeMouseCallback(uint32_t msg, WPARAM wp, LPARAM lp)
 {
 	const CallbackID id = g_msg_callback_map.at(msg);
 	const auto dispId = GetDISPID(id);
@@ -270,7 +265,7 @@ bool ScriptHost::InvokeMouseCallback(UINT msg, WPARAM wp, LPARAM lp)
 
 std::optional<DISPID> ScriptHost::GetDISPID(CallbackID id)
 {
-	if (m_ok && m_script_root)
+	if (m_script_root)
 	{
 		const auto it = m_callback_map.find(id);
 		if (it != m_callback_map.end())
@@ -292,9 +287,9 @@ void ScriptHost::InvokeCallback(CallbackID id, VariantArgs args)
 	}
 }
 
-void ScriptHost::Stop()
+void ScriptHost::Reset()
 {
-	if (m_ok && m_script_engine)
+	if (m_script_engine && m_state == SCRIPTSTATE_CONNECTED)
 	{
 		wil::com_ptr_t<IActiveScriptGarbageCollector> gc;
 		if (SUCCEEDED(m_script_engine->QueryInterface(&gc)))
@@ -311,5 +306,4 @@ void ScriptHost::Stop()
 	m_callback_map.clear();
 	m_script_engine.reset();
 	m_script_root.reset();
-	m_ok = false;
 }

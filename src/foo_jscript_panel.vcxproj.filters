@@ -14,9 +14,6 @@
     <Filter Include="Panel">
       <UniqueIdentifier>{e722b6ce-919f-4b66-baf9-b6c64836bda9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ScriptHost">
-      <UniqueIdentifier>{23ce7058-ac84-48d9-b4e7-2cf9aa97870b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ScriptInterface">
       <UniqueIdentifier>{ebff20e6-84a9-41a9-8507-e19d053296d4}</UniqueIdentifier>
     </Filter>

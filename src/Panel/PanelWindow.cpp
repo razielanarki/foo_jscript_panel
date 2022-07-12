@@ -320,8 +320,9 @@ void PanelWindow::load_script()
 	m_grabfocus = false;
 
 	m_script_host->m_info.update(m_id, m_config.m_code);
-	if (!m_script_host->Initialise())
+	if (FAILED(m_script_host->Initialise()))
 	{
+		m_script_host->Reset();
 		return;
 	}
 
@@ -364,7 +365,7 @@ void PanelWindow::on_paint()
 	static constexpr COLORREF colour_bg_error = RGB(225, 60, 45);
 	static constexpr COLORREF colour_white = RGB(255, 255, 255);
 
-	if (m_script_host->m_ok)
+	if (m_script_host->m_state == SCRIPTSTATE_CONNECTED)
 	{
 		if (is_transparent())
 		{
@@ -497,12 +498,16 @@ void PanelWindow::show_property_popup(HWND parent)
 	}
 }
 
-void PanelWindow::unload_script()
+void PanelWindow::unload_script(bool invoke_callback)
 {
-	m_script_host->InvokeCallback(CallbackID::on_script_unload);
-
 	clear_timers();
-	m_script_host->Stop();
+
+	if (invoke_callback)
+	{
+		m_script_host->InvokeCallback(CallbackID::on_script_unload);
+	}
+
+	m_script_host->Reset();
 	m_selection_holder.release();
 
 	if (m_tooltip.IsWindow())
