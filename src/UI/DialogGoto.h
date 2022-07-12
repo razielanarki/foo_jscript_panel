@@ -21,7 +21,15 @@ public:
 
 	void OnCloseCmd(UINT, int nID, CWindow)
 	{
-		m_line_number = std::stoi(pfc::getWindowText(m_edit_line_number).get_ptr());
+		const string8 text = pfc::getWindowText(m_edit_line_number);
+		if (pfc::string_is_numeric(text))
+		{
+			m_line_number = std::stoi(text.get_ptr());
+		}
+		else
+		{
+			m_line_number = 1;
+		}
 		EndDialog(nID);
 	}
 
