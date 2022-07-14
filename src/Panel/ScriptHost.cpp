@@ -229,7 +229,7 @@ STDMETHODIMP ScriptHost::OnScriptError(IActiveScriptError* err)
 
 	MessageBeep(MB_ICONASTERISK);
 	if (m_script_engine) m_script_engine->SetScriptState(SCRIPTSTATE_DISCONNECTED);
-	m_panel->unload_script(false);
+	m_panel->unload_script();
 	m_panel->repaint();
 	return S_OK;
 }
@@ -243,6 +243,11 @@ STDMETHODIMP ScriptHost::OnStateChange(SCRIPTSTATE state)
 {
 	m_state = state;
 	return S_OK;
+}
+
+bool ScriptHost::CheckState()
+{
+	return m_state == SCRIPTSTATE_CONNECTED;
 }
 
 bool ScriptHost::InvokeMouseCallback(uint32_t msg, WPARAM wp, LPARAM lp)
@@ -289,7 +294,7 @@ void ScriptHost::InvokeCallback(CallbackID id, VariantArgs args)
 
 void ScriptHost::Reset()
 {
-	if (m_script_engine && m_state == SCRIPTSTATE_CONNECTED)
+	if (m_script_engine && CheckState())
 	{
 		wil::com_ptr_t<IActiveScriptGarbageCollector> gc;
 		if (SUCCEEDED(m_script_engine->QueryInterface(&gc)))

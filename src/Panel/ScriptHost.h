@@ -17,11 +17,11 @@ public:
 	STDMETHODIMP OnScriptError(IActiveScriptError* err) override;
 	STDMETHODIMP OnScriptTerminate(const VARIANT*, const EXCEPINFO*) override;
 	STDMETHODIMP OnStateChange(SCRIPTSTATE state) override;
+	bool CheckState();
 	bool InvokeMouseCallback(uint32_t msg, WPARAM wp, LPARAM lp);
 	void InvokeCallback(CallbackID id, VariantArgs args = {});
 	void Reset();
 
-	SCRIPTSTATE m_state{};
 	ScriptInfo m_info;
 
 private:
@@ -32,6 +32,7 @@ private:
 
 	DWORD m_last_source_context{};
 	PanelWindow* m_panel;
+	SCRIPTSTATE m_state{};
 	std::map<CallbackID, DISPID> m_callback_map;
 	std::map<DWORD, std::string> m_context_to_path_map;
 	wil::com_ptr_t<Console> m_console;
