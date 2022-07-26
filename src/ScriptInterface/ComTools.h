@@ -17,8 +17,8 @@ protected:
 		if (!g_type_lib)
 		{
 			const HINSTANCE ins = core_api::get_my_instance();
-			const std::wstring path = wil::GetModuleFileNameW<std::wstring>(ins);
-			LoadTypeLibEx(path.data(), REGKIND_NONE, &g_type_lib);
+			const auto path = wil::GetModuleFileNameW(ins);
+			LoadTypeLibEx(path.get(), REGKIND_NONE, &g_type_lib);
 		}
 
 		if (!s_type_info_cache.type_info)
@@ -30,9 +30,9 @@ protected:
 	virtual ~JSDispatchImplBase() {}
 
 public:
-	STDMETHODIMP GetIDsOfNames(REFIID, OLECHAR** names, UINT cNames, LCID, DISPID* dispids) override
+	STDMETHODIMP GetIDsOfNames(REFIID, OLECHAR** names, UINT, LCID, DISPID* dispids) override
 	{
-		if (!dispids) return E_POINTER;
+		RETURN_HR_IF_NULL(E_POINTER, dispids);
 
 		const ULONG hash = LHashValOfName(LANG_NEUTRAL, names[0]);
 		const auto it = s_type_info_cache.cache.find(hash);
@@ -50,7 +50,7 @@ public:
 
 	STDMETHODIMP GetTypeInfo(UINT i, LCID, ITypeInfo** out) override
 	{
-		if (!out) return E_POINTER;
+		RETURN_HR_IF_NULL(E_POINTER, out);
 		if (i != 0) return DISP_E_BADINDEX;
 
 		s_type_info_cache.type_info->AddRef();
@@ -60,7 +60,7 @@ public:
 
 	STDMETHODIMP GetTypeInfoCount(UINT* n) override
 	{
-		if (!n) return E_POINTER;
+		RETURN_HR_IF_NULL(E_POINTER, n);
 
 		*n = 1;
 		return S_OK;
@@ -119,12 +119,12 @@ public:
 	}
 };
 
-template <typename _Base>
-class ComObjectImpl : public _Base
+template <typename Base>
+class ComObjectImpl : public Base
 {
 public:
 	template <typename... Args>
-	ComObjectImpl(Args&&... args) : _Base(std::forward<Args>(args)...) {}
+	ComObjectImpl(Args&&... args) : Base(std::forward<Args>(args)...) {}
 
 	ULONG STDMETHODCALLTYPE AddRef() override
 	{
@@ -145,9 +145,10 @@ public:
 		return n;
 	}
 
-private:
-	~ComObjectImpl() {}
+protected:
+	virtual ~ComObjectImpl() {}
 
+private:
 	pfc::refcounter m_counter = 1;
 };
 

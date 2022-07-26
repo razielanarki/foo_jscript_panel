@@ -21,20 +21,20 @@ namespace Component
 
 	std::string get_resource_text(int id)
 	{
-		puResource pures = uLoadResource(core_api::get_my_instance(), uMAKEINTRESOURCE(id), "TEXT");
-		return std::string(static_cast<const char*>(pures->GetPointer()), pures->GetSize());
+		const auto res = uLoadResource(core_api::get_my_instance(), uMAKEINTRESOURCE(id), "TEXT");
+		return std::string(static_cast<const char*>(res->GetPointer()), res->GetSize());
 	}
 
 	std::wstring get_path()
 	{
-		const std::wstring path = wil::GetModuleFileNameW<std::wstring>(core_api::get_my_instance());
-		return FileHelper(path).parent_path();
+		const auto path = wil::GetModuleFileNameW(core_api::get_my_instance());
+		return FileHelper(path.get()).parent_path();
 	}
 
 	std::wstring get_fb2k_path()
 	{
-		const std::wstring path = wil::GetModuleFileNameW<std::wstring>(nullptr);
-		return FileHelper(path).parent_path();
+		const auto path = wil::GetModuleFileNameW();
+		return FileHelper(path.get()).parent_path();
 	}
 
 	std::wstring get_profile_path()

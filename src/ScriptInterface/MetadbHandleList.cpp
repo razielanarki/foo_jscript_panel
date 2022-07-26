@@ -266,7 +266,7 @@ STDMETHODIMP MetadbHandleList::OrderByRelativePath()
 		if (!api->get_relative_path(item, str)) str.reset();
 		str << item->get_subsong_index();
 		items[i].index = i;
-		items[i].text = CustomSort::make_sort_string(str);
+		items[i].text = to_wide(str);
 	}
 
 	CustomSort::Order order = CustomSort::custom_sort(items);

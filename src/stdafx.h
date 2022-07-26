@@ -21,11 +21,13 @@
 #include <ActivScp.h>
 #include <ComDef.h>
 
-#include <json.hpp>
 #include <wil/com.h>
 #include <wil/resource.h>
-#include <wil/stl.h>
 #include <wil/win32_helpers.h>
+
+#define JSON_USE_IMPLICIT_CONVERSIONS 0
+#include <json.hpp>
+using json = nlohmann::json;
 
 #include <foobar2000/helpers/foobar2000+atl.h>
 #include <foobar2000/helpers/atl-misc.h>
@@ -39,7 +41,6 @@
 #include <columns_ui-sdk/ui_extension.h>
 
 using VariantArgs = std::vector<_variant_t>;
-using json = nlohmann::json;
 using pfc::string8;
 
 #include "foo_jscript_panel.h"

@@ -605,18 +605,16 @@ STDMETHODIMP Plman::SortByFormatV2(UINT playlistIndex, BSTR pattern, int directi
 	if (!out) return E_POINTER;
 	RETURN_IF_FAILED(check_playlist_index(playlistIndex));
 
+	titleformat_object::ptr obj;
 	const string8 upattern = from_wide(pattern);
+	titleformat_compiler::get()->compile_safe(obj, upattern);
+	
 	metadb_handle_list items;
 	theAPI()->playlist_get_all_items(playlistIndex, items);
 	const size_t count = items.get_count();
-
 	CustomSort::Order order(count);
 
-	titleformat_object::ptr obj;
-	titleformat_compiler::get()->compile_safe(obj, upattern);
-
 	metadb_handle_list_helper::sort_by_format_get_order_v2(items, order.data(), obj, nullptr, direction, fb2k::noAbort);
-
 	*out = to_variant_bool(theAPI()->playlist_reorder_items(playlistIndex, order.data(), count));
 	return S_OK;
 }
@@ -633,7 +631,7 @@ STDMETHODIMP Plman::SortPlaylistsByName(int direction)
 	{
 		theAPI()->playlist_get_name(i, str);
 		items[i].index = i;
-		items[i].text = CustomSort::make_sort_string(str);
+		items[i].text = to_wide(str);
 	}
 
 	CustomSort::Order order = CustomSort::custom_sort(items, direction);

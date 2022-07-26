@@ -10,7 +10,6 @@ namespace CustomSort
 
 	using Items = std::vector<Item>;
 	using Order = std::vector<size_t>;
-	static const std::wstring space = L" ";
 
 	template <int direction>
 	static bool custom_sort_compare(const Item& a, const Item& b)
@@ -26,10 +25,5 @@ namespace CustomSort
 		std::ranges::sort(items, direction > 0 ? custom_sort_compare<1> : custom_sort_compare<-1>);
 		std::ranges::transform(items, order.begin(), [](const Item& item) { return item.index; });
 		return order;
-	}
-
-	static std::wstring make_sort_string(jstring in)
-	{
-		return space + to_wide(in);
 	}
 }
