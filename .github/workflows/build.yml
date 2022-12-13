@@ -16,7 +16,7 @@ jobs:
         submodules: recursive
 
     - name: Set up MSBuild
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v1.2
 
     - name: Set repo variable
       run: |
